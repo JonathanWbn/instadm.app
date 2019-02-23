@@ -1,6 +1,7 @@
 const express = require('express')
 const next = require('next')
-var Client = require('instagram-private-api').V1
+
+const { followDanBilzerian, startSolvingChallenge, finishSolvingChallenge } = require('./instagram')
 var bodyParser = require('body-parser')
 
 const port = parseInt(process.env.PORT, 10) || 3000
@@ -17,37 +18,32 @@ app.prepare().then(() => {
 
   server.post('/login', async (req, res) => {
     const { username, password } = req.body
-    const device = new Client.Device(username)
-    const storage = new Client.CookieMemoryStorage()
-
-    const followDanBilzerian = async () => {
-      try {
-        const session = await Client.Session.create(device, storage, username, password)
-        const account = await Client.Account.searchForUser(session, 'danbilzerian')
-        const relation = await Client.Relationship.create(session, account.id)
-        console.log('successfully subscribed to dan bilzerian')
-        return relation
-      } catch (error) {
-        if (error.json && error.json.error_type === 'checkpoint_challenge_required') {
-          console.log('solving challenge')
-          try {
-            const challenge = await Client.Web.Challenge.resolve(error, 'phone')
-            if (challenge.type !== 'phone') return
-            await challenge.phone()
-            await challenge.code('037825')
-          } catch (challengeError) {
-            console.log('challenge failed', challengeError.message)
-          }
-          console.log('challenge succeeded. logging in again')
-          await followDanBilzerian()
-        } else {
-          // TODO: Login required to process this request
-          console.log('error', error.message)
+    try {
+      await followDanBilzerian(username, password)
+    } catch (error) {
+      if (error.json && error.json.error_type === 'checkpoint_challenge_required') {
+        try {
+          await startSolvingChallenge(error)
+          res.json({ code: 'needs_code' })
+        } catch (challengeError) {
+          res.json({ code: 'challenge_failed' })
         }
+      } else {
+        res.json({ code: 'login_failed' })
       }
     }
+  })
 
-    await followDanBilzerian()
+  server.post('/challenge', async (req, res) => {
+    const { code, username, password } = req.body
+    try {
+      await finishSolvingChallenge(code)
+      console.log('challenge solved')
+      await followDanBilzerian(username, password)
+    } catch (error) {
+      console.log('challenge_failed', error)
+      res.json({ code: 'challenge_failed' })
+    }
   })
 
   server.listen(port, err => {
