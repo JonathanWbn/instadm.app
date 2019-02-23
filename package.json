@@ -11,7 +11,9 @@
     "prettier": "^1.16.4"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "instagram-private-api": "^0.6.8",
     "next": "^8.0.3",
     "react": "^16.8.3",
     "react-dom": "^16.8.3"
