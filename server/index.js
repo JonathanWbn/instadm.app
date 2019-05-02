@@ -4,6 +4,8 @@ const { Nuxt, Builder } = require("nuxt");
 const passport = require("passport");
 const bodyParser = require("body-parser");
 const LocalStrategy = require("passport-local").Strategy;
+const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 
 const config = require("../nuxt.config.js");
 
@@ -12,7 +14,7 @@ config.dev = !(process.env.NODE_ENV === "production");
 const app = express();
 
 passport.use(
-  new LocalStrategy(function(username, password, done) {
+  new LocalStrategy((username, password, done) => {
     return done(null, { username, password });
   })
 );
@@ -22,7 +24,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(username, done) {
-  done(err, { username });
+  done(null, { username });
 });
 
 const nuxt = new Nuxt(config);
@@ -36,9 +38,12 @@ if (config.dev) {
   nuxt.ready();
 }
 
+app.use(cookieSession({ secret: "some-secret" }));
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
+app.use(passport.session());
 
 app.post(
   "/login",
