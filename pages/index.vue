@@ -1,28 +1,14 @@
 <template>
   <section class="container">
-    <form @submit.prevent="onSubmit(username, password)">
-      <h1 class="title">Instagram DM web app</h1>
-      <input v-model="username" type="text" name="username" class="input">
-      <input v-model="password" type="password" name="password" class="input">
-      <button type="submit">submit</button>
-    </form>
+    <h1 class="title">Instagram DM web app</h1>
   </section>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      username: null,
-      password: null,
-    }
-  },
-  methods: {
-    onSubmit(email, password) {
-      console.log('ON SUBMIT', email, password)
-    },
-  },
-}
+fetch('/feed')
+  .then(res => res.json())
+  .then(res => console.log('res', res))
+  .catch(() => console.log('feed fetch failed'))
 </script>
 
 <style>

@@ -1,18 +1,26 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 
+const { login } = require('./instagram.js')
+
+const store = {}
+
 passport.use(
   new LocalStrategy((username, password, done) => {
-    return done(null, { username, password })
+    login(username, password)
+      .then(loggedInUser => done(null, loggedInUser))
+      .catch(error => done(error))
   })
 )
 
 passport.serializeUser(function(user, done) {
-  done(null, user.username)
+  console.log('serializeUser', user.pk)
+  store[user.pk] = user
+  done(null, user.pk)
 })
 
-passport.deserializeUser(function(username, done) {
-  done(null, { username })
+passport.deserializeUser(function(pk, done) {
+  done(null, store[pk] || null)
 })
 
 module.exports = passport
