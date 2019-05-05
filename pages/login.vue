@@ -1,9 +1,9 @@
 <template>
   <section class="container">
-    <form v-on:submit.prevent="onSubmit(username, password);">
+    <form @submit.prevent="onSubmit(username, password)">
       <h1 class="title">Instagram DM web app</h1>
-      <input type="text" name="username" class="input" v-model="username">
-      <input type="password" name="password" class="input" v-model="password">
+      <input v-model="username" type="text" name="username" class="input">
+      <input v-model="password" type="password" name="password" class="input">
       <button type="submit">submit</button>
     </form>
   </section>
@@ -14,21 +14,21 @@ export default {
   data() {
     return {
       username: null,
-      password: null
-    };
+      password: null,
+    }
   },
   methods: {
     onSubmit(email, password) {
-      window.fetch("/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ username: email, password })
-      });
-    }
-  }
-};
+      fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: email, password }),
+      })
+        .then(() => (window.location.href = '/'))
+        .catch(() => (window.location.href = '/error'))
+    },
+  },
+}
 </script>
 
 <style>
@@ -42,8 +42,8 @@ export default {
 }
 
 .title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;
