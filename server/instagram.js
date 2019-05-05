@@ -12,12 +12,12 @@ const login = async (username, password) => {
   return loggedInUser
 }
 
-const getFeed = async pk => {
-  const userFeed = ig.feed.user(pk)
-  return await userFeed.items()
+const getInbox = async pk => {
+  const inboxFeed = ig.feed.directInbox()
+  return await inboxFeed.items()
 }
 
 module.exports = {
   login,
-  getFeed,
+  getInbox,
 }

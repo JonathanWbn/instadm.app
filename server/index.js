@@ -7,7 +7,7 @@ const cookieSession = require('cookie-session')
 
 const passport = require('./passport.js')
 const config = require('../nuxt.config.js')
-const { getFeed } = require('./instagram.js')
+const { getInbox } = require('./instagram.js')
 
 config.dev = process.env.NODE_ENV !== 'production'
 
@@ -35,10 +35,10 @@ app
     if (req.user) next()
     else res.status(301).redirect('/login')
   })
-  .get('/feed', (req, res) => {
+  .get('/inbox', (req, res) => {
     if (req.user) {
-      getFeed(req.user.pk)
-        .then(feed => res.send(feed))
+      getInbox(req.user.pk)
+        .then(inbox => res.send(inbox))
         .catch(() => res.status(400).end('no feed'))
     } else {
       res.status(400).end('no user')

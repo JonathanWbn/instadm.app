@@ -1,14 +1,40 @@
 <template>
   <section class="container">
     <h1 class="title">Instagram DM web app</h1>
+    <ul>
+      <li v-for="item in inbox">
+        <strong>{{ item.thread_title }}</strong>
+        <span
+          v-if="item.last_permanent_item.item_type === 'reel_share'"
+        >{{item.last_permanent_item.reel_share.text }}</span>
+        <span
+          v-if="item.last_permanent_item.item_type === 'text'"
+        >{{item.last_permanent_item.text }}</span>
+        <span v-if="item.last_permanent_item.item_type === 'raven_media'">expired image</span>
+      </li>
+    </ul>
   </section>
 </template>
 
 <script>
-fetch('/feed')
-  .then(res => res.json())
-  .then(res => console.log('res', res))
-  .catch(() => console.log('feed fetch failed'))
+export default {
+  data() {
+    return {
+      inbox: [],
+    }
+  },
+  created() {
+    fetch('/inbox')
+      .then(res => res.json())
+      .then(res => this.setInbox(res))
+      .catch(() => (window.location.href = '/login'))
+  },
+  methods: {
+    setInbox(inbox) {
+      this.inbox = inbox
+    },
+  },
+}
 </script>
 
 <style>
