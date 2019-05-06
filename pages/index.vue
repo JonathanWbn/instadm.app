@@ -6,21 +6,10 @@
         <div v-for="item in inbox" :key="item.thread_id" class="inbox-item">
           <img :src="item.users[0].profile_pic_url">
           <div class="text">
-            <p class="title">{{ item.thread_title }}</p>
-            <p
-              class="content"
-              v-if="item.last_permanent_item.item_type === 'reel_share'"
-            >{{item.last_permanent_item.reel_share.text }}</p>
-            <p
-              class="content"
-              v-if="item.last_permanent_item.item_type === 'text'"
-            >{{item.last_permanent_item.text }}</p>
-            <p
-              class="content"
-              v-if="item.last_permanent_item.item_type === 'raven_media'"
-            >expired image</p>
+            <p class="title">{{item.thread_title}}</p>
+            <p class="content">{{item.content}}</p>
           </div>
-          <div class="last-activity">{{item.last_activity_at}}</div>
+          <div class="last-activity">{{item.last_activity_date}}</div>
         </div>
       </div>
       <div class="chat-container"></div>
@@ -31,20 +20,23 @@
 <script>
 import moment from 'moment'
 
+const formatThread = thread => ({
+  ...thread,
+  last_activity_date: moment(+thread.last_activity_at).format('D MMM'),
+  content:
+    (thread.last_permanent_item.item_type === 'reel_share' && thread.last_permanent_item.reel_share.text) ||
+    (thread.last_permanent_item.item_type === 'text' && thread.last_permanent_item.text) ||
+    (thread.last_permanent_item.item_type === 'raven_media' && 'image'),
+})
+
 export default {
   data() {
-    return {
-      inbox: [],
-    }
+    return { inbox: [] }
   },
   created() {
     fetch('/inbox')
       .then(res => res.json())
-      .then(
-        res =>
-          console.log(res) ||
-          this.setInbox(res.map(el => ({ ...el, last_activity_at: moment(+el.last_activity_at).format('D MMM') })))
-      )
+      .then(res => this.setInbox(res.map(formatThread)))
       .catch(() => (window.location.href = '/login'))
   },
   methods: {
@@ -59,7 +51,6 @@ export default {
 .wrapper {
   height: 100vh;
   width: 100vw;
-  background-color: #f3f3fc;
   padding: 75px;
 }
 

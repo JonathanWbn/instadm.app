@@ -44,7 +44,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f3f3fc;
 }
 
 form {
@@ -54,6 +53,16 @@ form {
   padding: 40px;
   display: flex;
   flex-direction: column;
+}
+
+input {
+  background-color: white;
+  border: 1px solid lightgrey;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  padding: 7px 10px;
+  width: 300px;
 }
 
 button {
@@ -73,25 +82,5 @@ button {
 button:hover {
   background-color: #7795f8;
   box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-}
-
-input {
-  background-color: white;
-  border: 1px solid lightgrey;
-  border-radius: 3px;
-  margin-bottom: 20px;
-  font-size: 15px;
-  padding: 7px 10px;
-  width: 300px;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
-    Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
 }
 </style>
