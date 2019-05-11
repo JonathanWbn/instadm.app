@@ -14,7 +14,6 @@ passport.use(
 )
 
 passport.serializeUser(function(user, done) {
-  console.log('serializeUser', user.pk)
   store[user.pk] = user
   done(null, user.pk)
 })

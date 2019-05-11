@@ -3,7 +3,12 @@
     <h1>Chat</h1>
     <div class="container">
       <div class="inbox-list">
-        <div v-for="item in inbox" :key="item.thread_id" class="inbox-item">
+        <div
+          v-for="item in inbox"
+          :key="item.thread_id"
+          class="inbox-item"
+          @click="selectThread(item.thread_id)"
+        >
           <img :src="item.users[0].profile_pic_url">
           <div class="text">
             <p class="title">{{item.thread_title}}</p>
@@ -12,7 +17,25 @@
           <div class="last-activity">{{item.last_activity_date}}</div>
         </div>
       </div>
-      <div class="chat-container"></div>
+      <div class="chat-container">
+        <div
+          v-for="item in items"
+          :key="item.item_id"
+          class="chat-item"
+          v-bind:class="{ 'user-item': item.user_id !== thread.users[0].pk, 'friend-item': item.user_id === thread.users[0].pk }"
+        >
+          <div v-if="item.item_type === 'text'" class="message">{{item.text}}</div>
+          <div
+            class="message-preface"
+            v-if="item.reel_share && item.reel_share.type === 'reaction'"
+          >You reacted to their story</div>
+          <div
+            class="message-preface"
+            v-if="item.reel_share && item.reel_share.type === 'reply'"
+          >You replied to their story</div>
+          <div v-if="item.item_type === 'reel_share'" class="message">{{item.reel_share.text}}</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -31,7 +54,11 @@ const formatThread = thread => ({
 
 export default {
   data() {
-    return { inbox: [] }
+    return {
+      inbox: [],
+      items: [],
+      thread: null,
+    }
   },
   created() {
     fetch('/inbox')
@@ -42,6 +69,10 @@ export default {
   methods: {
     setInbox(inbox) {
       this.inbox = inbox
+    },
+    selectThread(id) {
+      this.thread = this.inbox.find(item => item.thread_id === id)
+      this.items = this.thread.items.sort((a, b) => a.timestamp - b.timestamp)
     },
   },
 }
@@ -66,6 +97,7 @@ h1 {
 
 .inbox-list {
   overflow: scroll;
+  min-width: 420px;
 }
 
 .inbox-item {
@@ -119,5 +151,45 @@ h1 {
 
 .chat-container {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-item {
+  margin: 5px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  padding: 5px 15px;
+  border-radius: 20px;
+  line-height: 26px;
+}
+
+.message-preface {
+  color: grey;
+  margin-bottom: 3px;
+}
+
+.friend-item {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.user-item {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.friend-item .message {
+  background-color: lightgray;
+  color: black;
+}
+
+.user-item .message {
+  background-color: blue;
+  color: white;
 }
 </style>
