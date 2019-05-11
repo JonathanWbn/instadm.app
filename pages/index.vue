@@ -2,77 +2,45 @@
   <div class="wrapper">
     <h1>Chat</h1>
     <div class="container">
-      <div class="inbox-list">
-        <div
-          v-for="item in inbox"
-          :key="item.thread_id"
-          class="inbox-item"
-          @click="selectThread(item.thread_id)"
-        >
-          <img :src="item.users[0].profile_pic_url">
-          <div class="text">
-            <p class="title">{{item.thread_title}}</p>
-            <p class="content">{{item.content}}</p>
-          </div>
-          <div class="last-activity">{{item.last_activity_date}}</div>
-        </div>
-      </div>
-      <div class="chat-container">
-        <div
-          v-for="item in items"
-          :key="item.item_id"
-          class="chat-item"
-          v-bind:class="{ 'user-item': item.user_id !== thread.users[0].pk, 'friend-item': item.user_id === thread.users[0].pk }"
-        >
-          <div v-if="item.item_type === 'text'" class="message">{{item.text}}</div>
-          <div
-            class="message-preface"
-            v-if="item.reel_share && item.reel_share.type === 'reaction'"
-          >You reacted to their story</div>
-          <div
-            class="message-preface"
-            v-if="item.reel_share && item.reel_share.type === 'reply'"
-          >You replied to their story</div>
-          <div v-if="item.item_type === 'reel_share'" class="message">{{item.reel_share.text}}</div>
-        </div>
-      </div>
+      <InboxList @select-thread="selectThread" :inbox="inbox"/>
+      <ChatContainer :items="items" :friends="friends"/>
     </div>
   </div>
 </template>
 
 <script>
-import moment from 'moment'
-
-const formatThread = thread => ({
-  ...thread,
-  last_activity_date: moment(+thread.last_activity_at).format('D MMM'),
-  content:
-    (thread.last_permanent_item.item_type === 'reel_share' && thread.last_permanent_item.reel_share.text) ||
-    (thread.last_permanent_item.item_type === 'text' && thread.last_permanent_item.text) ||
-    (thread.last_permanent_item.item_type === 'raven_media' && 'image'),
-})
+import { formatThread } from '../utils'
+import InboxList from '~/components/inbox-list'
+import ChatContainer from '~/components/chat-container'
 
 export default {
   data() {
     return {
       inbox: [],
-      items: [],
       thread: null,
     }
   },
   created() {
     fetch('/inbox')
       .then(res => res.json())
-      .then(res => this.setInbox(res.map(formatThread)))
+      .then(res => (this.inbox = res.map(formatThread)))
       .catch(() => (window.location.href = '/login'))
   },
+  components: {
+    InboxList,
+    ChatContainer,
+  },
   methods: {
-    setInbox(inbox) {
-      this.inbox = inbox
+    selectThread(index) {
+      this.thread = this.inbox[index]
     },
-    selectThread(id) {
-      this.thread = this.inbox.find(item => item.thread_id === id)
-      this.items = this.thread.items.sort((a, b) => a.timestamp - b.timestamp)
+  },
+  computed: {
+    items() {
+      return this.thread ? this.thread.items.sort((a, b) => a.timestamp - b.timestamp) : []
+    },
+    friends() {
+      return this.thread ? this.thread.users : []
     },
   },
 }
@@ -93,103 +61,5 @@ h1 {
   display: flex;
   flex-direction: row;
   height: calc(100% - 38px);
-}
-
-.inbox-list {
-  overflow: scroll;
-  min-width: 420px;
-}
-
-.inbox-item {
-  width: 400px;
-  background-color: white;
-  border-radius: 5px;
-  padding: 20px;
-  margin: 10px;
-  box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
-  position: relative;
-  display: flex;
-  align-items: center;
-  transition: box-shadow 0.3s ease;
-  cursor: pointer;
-}
-
-.inbox-item:hover {
-  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-}
-
-.inbox-item img {
-  border-radius: 100%;
-  height: 50px;
-  width: 50px;
-}
-
-.inbox-item .last-activity {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  color: grey;
-}
-
-.inbox-item .text {
-  margin-left: 15px;
-}
-
-.inbox-item .text .title {
-  font-weight: 500;
-}
-
-.inbox-item .text .content {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  color: grey;
-  line-height: 26px;
-  margin-top: 2px;
-  overflow: hidden;
-  width: 295px;
-}
-
-.chat-container {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.chat-item {
-  margin: 5px;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-}
-
-.message {
-  padding: 5px 15px;
-  border-radius: 20px;
-  line-height: 26px;
-}
-
-.message-preface {
-  color: grey;
-  margin-bottom: 3px;
-}
-
-.friend-item {
-  align-self: flex-start;
-  align-items: flex-start;
-}
-
-.user-item {
-  align-self: flex-end;
-  align-items: flex-end;
-}
-
-.friend-item .message {
-  background-color: lightgray;
-  color: black;
-}
-
-.user-item .message {
-  background-color: blue;
-  color: white;
 }
 </style>

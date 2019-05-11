@@ -1,6 +1,6 @@
 <template>
   <section class="container">
-    <form @submit.prevent="onSubmit(username, password)">
+    <form @submit.prevent="onSubmit">
       <input v-model="username" type="text" name="username" class="input" placeholder="Username">
       <input
         v-model="password"
@@ -17,18 +17,15 @@
 <script>
 export default {
   data() {
-    return {
-      username: null,
-      password: null,
-    }
+    return { username: null, password: null }
   },
   methods: {
-    onSubmit(email, password) {
-      if (!email || !password) return
+    onSubmit() {
+      if (!this.username || !this.password) return
       fetch('/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: email, password }),
+        body: JSON.stringify({ username: this.username, password: this.password }),
       })
         .then(() => (window.location.href = '/'))
         .catch(() => (window.location.href = '/error'))
