@@ -1,12 +1,19 @@
 <template>
   <div class="chat-container">
     <div
-      v-for="item in items"
+      v-for="(item, index) in items"
       :key="item.item_id"
       class="chat-item"
-      :class="{ 'user-item': item.user_id !== friends[0].pk, 'friend-item': item.user_id === friends[0].pk }"
+      :class="{ 'user-item': item.user_id !== friend.pk, 'friend-item': item.user_id === friend.pk }"
     >
-      <div v-if="item.item_type === 'text'" class="message">{{ item.text }}</div>
+      <div class="message-wrapper">
+        <img
+          v-if="item.user_id === friend.pk && (!items[index - 1] || items[index - 1].user_id !== friend.pk)"
+          :src="friend.profile_pic_url"
+        >
+        <div v-else class="image-placeholder"/>
+        <div v-if="item.item_type === 'text'" class="message">{{ item.text }}</div>
+      </div>
       <div
         class="message-preface"
         v-if="item.reel_share"
@@ -19,23 +26,24 @@
 <script>
 export default {
   props: {
-    items: {
-      type: Array,
-      required: true,
-    },
-    friends: {
-      type: Array,
-      required: true,
+    items: {},
+    thread: {},
+  },
+  computed: {
+    friend() {
+      return this.thread && this.thread.users[0]
     },
   },
 }
 </script>
 
-<style>
+<style scoped>
 .chat-container {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  overflow: scroll;
+  padding-right: 5px;
 }
 
 .chat-item {
@@ -43,6 +51,21 @@ export default {
   max-width: 400px;
   display: flex;
   flex-direction: column;
+}
+
+.message-wrapper {
+  display: flex;
+}
+
+.image-placeholder {
+  min-width: 50px;
+}
+
+img {
+  min-width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  margin-right: 10px;
 }
 
 .message {
