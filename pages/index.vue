@@ -3,7 +3,7 @@
     <h1>Chat</h1>
     <div class="container">
       <InboxList @select-thread="selectThread" :inbox="inbox"/>
-      <ChatContainer :items="items" :thread="thread"/>
+      <ChatContainer :items="items" :thread="selectedThread"/>
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       inbox: [],
-      selectedThread: undefined,
+      selectedThread: null,
     }
   },
   created() {
@@ -32,18 +32,12 @@ export default {
   },
   methods: {
     selectThread(index) {
-      this.selectedThread = index
+      this.selectedThread = this.inbox[index]
     },
   },
   computed: {
     items() {
-      return this.thread ? this.thread.items.sort((a, b) => a.timestamp - b.timestamp) : []
-    },
-    friends() {
-      return this.thread ? this.thread.users : []
-    },
-    thread() {
-      return typeof this.selectedThread === 'number' ? this.inbox[this.selectedThread] : null
+      return this.selectedThread ? this.selectedThread.items.sort((a, b) => a.timestamp - b.timestamp) : []
     },
   },
 }

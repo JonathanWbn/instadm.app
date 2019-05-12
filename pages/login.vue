@@ -9,7 +9,12 @@
         class="input"
         placeholder="Password"
       >
-      <button type="submit">LOGIN</button>
+      <div v-if="error" class="error">{{ error }}</div>
+      <button
+        type="submit"
+        :class="{ loading: isLoading }"
+        :disabled="isLoading"
+      >{{ isLoading ? '...' : 'LOGIN' }}</button>
     </form>
   </section>
 </template>
@@ -17,24 +22,36 @@
 <script>
 export default {
   data() {
-    return { username: null, password: null }
+    return {
+      username: null,
+      password: null,
+      isLoading: false,
+      error: null,
+    }
   },
   methods: {
-    onSubmit() {
+    async onSubmit() {
       if (!this.username || !this.password) return
-      fetch('/login', {
+      this.isLoading = true
+      const config = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: this.username, password: this.password }),
-      })
-        .then(() => (window.location.href = '/'))
-        .catch(() => (window.location.href = '/error'))
+      }
+      const { status, statusText } = await fetch('/login', config)
+      if (status === 200) {
+        this.isLoading = false
+        window.location.href = '/'
+      } else {
+        this.isLoading = false
+        this.error = statusText
+      }
     },
   },
 }
 </script>
 
-<style>
+<style scoped>
 .container {
   height: 100vh;
   width: 100vw;
@@ -79,5 +96,16 @@ button {
 button:hover {
   background-color: #7795f8;
   box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+button.loading {
+  background-color: grey;
+  cursor: default;
+}
+
+.error {
+  color: #d64040;
+  text-align: center;
+  width: 300px;
 }
 </style>
