@@ -20,14 +20,34 @@
       >{{ item.reel_share.type === 'reaction' ? 'You reacted to their story' : 'You replied to their story' }}</div>
       <div v-if="item.item_type === 'reel_share'" class="message">{{ item.reel_share.text }}</div>
     </div>
+    <form @submit.prevent="onSubmit">
+      <input v-model="message" name="message">
+      <button type="submit">Send</button>
+    </form>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      message: '',
+    }
+  },
   props: {
     items: {},
     thread: {},
+  },
+  methods: {
+    async onSubmit() {
+      const config = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ thread_id: this.thread.thread_id, message: this.message }),
+      }
+      const { status, statusText } = await fetch('/send-message', config)
+      this.message = ''
+    },
   },
   computed: {
     friend() {

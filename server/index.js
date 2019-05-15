@@ -7,7 +7,7 @@ const cookieSession = require('cookie-session')
 
 const passport = require('./passport.js')
 const config = require('../nuxt.config.js')
-const { getInbox } = require('./instagram.js')
+const { getInbox, sendMessage } = require('./instagram.js')
 
 config.dev = process.env.NODE_ENV !== 'production'
 
@@ -40,6 +40,15 @@ app
       getInbox(req.user.pk)
         .then(inbox => res.send(inbox))
         .catch(() => res.status(400).end('no feed'))
+    } else {
+      res.status(400).end('no user')
+    }
+  })
+  .post('/send-message', (req, res) => {
+    if (req.user) {
+      sendMessage(req.user.pk, req.body.thread_id, req.body.message)
+        .then(() => res.send('sent'))
+        .catch(err => console.log('err', err) || res.status(400).end('TODO: error message'))
     } else {
       res.status(400).end('no user')
     }
