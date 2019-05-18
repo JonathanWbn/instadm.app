@@ -18,11 +18,8 @@ const getInbox = async pk => {
 }
 
 const sendMessage = async (pk, thread_id, message) => {
-  const inboxFeed = ig.feed.directInbox()
-  const threads = await inboxFeed.items()
-  const thread = threads.find(thread => thread.thread_id === thread_id)
+  const thread = ig.entity.directThread(thread_id)
   await thread.broadcastText(message)
-  // TODO: find correct API to send messages
   return 'sent'
 }
 
