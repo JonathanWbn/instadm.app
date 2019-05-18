@@ -39,18 +39,18 @@ app
     if (req.user) {
       getInbox(req.user.pk)
         .then(inbox => res.send(inbox))
-        .catch(() => res.status(400).end('no feed'))
+        .catch(err => res.status(400).send(err))
     } else {
-      res.status(400).end('no user')
+      res.status(404).end('user not found')
     }
   })
   .post('/send-message', (req, res) => {
     if (req.user) {
       sendMessage(req.user.pk, req.body.thread_id, req.body.message)
         .then(() => res.send('sent'))
-        .catch(err => console.log('err', err) || res.status(400).end('TODO: error message'))
+        .catch(err => res.status(400).send(err))
     } else {
-      res.status(400).end('no user')
+      res.status(404).end('user not found')
     }
   })
   .use(nuxt.render)
