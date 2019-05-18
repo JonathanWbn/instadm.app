@@ -1,5 +1,3 @@
-# Direct messaging for instagram as web app
+# Direct messaging for instagram (web app)
 
-Later to be deployed to: [instadm.app](https://instadm.app)
-
-Built with [Nuxt.js](https://nuxtjs.org).
+Later to be deployed to: [instadm.app](https://instadm.app).
