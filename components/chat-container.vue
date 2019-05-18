@@ -1,24 +1,26 @@
 <template>
   <div class="chat-container">
-    <div
-      v-for="(item, index) in items"
-      :key="item.item_id"
-      class="chat-item"
-      :class="{ 'user-item': item.user_id !== friend.pk, 'friend-item': item.user_id === friend.pk }"
-    >
-      <div class="message-wrapper">
-        <img
-          v-if="item.user_id === friend.pk && (!items[index - 1] || items[index - 1].user_id !== friend.pk)"
-          :src="friend.profile_pic_url"
-        >
-        <div v-else class="image-placeholder"/>
-        <div v-if="item.item_type === 'text'" class="message">{{ item.text }}</div>
-      </div>
+    <div id="messages" class="messages">
       <div
-        v-if="item.reel_share"
-        class="message-preface"
-      >{{ item.reel_share.type === 'reaction' ? 'You reacted to their story' : 'You replied to their story' }}</div>
-      <div v-if="item.item_type === 'reel_share'" class="message">{{ item.reel_share.text }}</div>
+        v-for="(item, index) in items"
+        :key="item.item_id"
+        class="chat-item"
+        :class="{ 'user-item': item.user_id !== friend.pk, 'friend-item': item.user_id === friend.pk }"
+      >
+        <div class="message-wrapper">
+          <img
+            v-if="item.user_id === friend.pk && (!items[index - 1] || items[index - 1].user_id !== friend.pk)"
+            :src="friend.profile_pic_url"
+          >
+          <div v-else class="image-placeholder"/>
+          <div v-if="item.item_type === 'text'" class="message">{{ item.text }}</div>
+        </div>
+        <div
+          v-if="item.reel_share"
+          class="message-preface"
+        >{{ item.reel_share.type === 'reaction' ? 'You reacted to their story' : 'You replied to their story' }}</div>
+        <div v-if="item.item_type === 'reel_share'" class="message">{{ item.reel_share.text }}</div>
+      </div>
     </div>
     <form v-if="items.length > 0" class="message-form" @submit.prevent="onSubmit">
       <input v-model="message" name="message" class="message-input">
@@ -36,38 +38,58 @@
 <script>
 export default {
   props: {
-    items: {
-      type: Array,
-      default() {
-        return []
-      },
-    },
-    thread: {
-      type: Object,
-      default() {
-        return null
-      },
+    threadId: {
+      type: String,
     },
   },
   data() {
     return {
       message: '',
+      thread: null,
     }
   },
   computed: {
     friend() {
       return this.thread && this.thread.users[0]
     },
+    items() {
+      return this.thread ? this.thread.items.concat().sort((a, b) => a.timestamp - b.timestamp) : []
+    },
+  },
+  watch: {
+    threadId(newId) {
+      if (newId) {
+        this.getThread(newId)
+      }
+    },
+  },
+  updated() {
+    this.scrollToBottom()
   },
   methods: {
     async onSubmit() {
+      this.message = ''
       const config = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ thread_id: this.thread.thread_id, message: this.message }),
+        body: JSON.stringify({ thread_id: this.threadId, message: this.message }),
       }
-      await fetch('/send-message', config)
-      this.message = ''
+      const { status } = await fetch('/send-message', config)
+      if (status === 200) {
+        await this.getThread()
+      }
+    },
+    async getThread(id = this.threadId) {
+      const res = await fetch(`/thread/${id}`)
+      if (res.status === 200) {
+        this.thread = await res.json()
+      }
+    },
+    scrollToBottom() {
+      const container = this.$el.querySelector('#messages')
+      if (container) {
+        container.scrollTop = container.scrollHeight
+      }
     },
   },
 }
@@ -78,9 +100,14 @@ export default {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
-  padding-right: 5px;
   justify-content: flex-end;
+}
+
+.messages {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  padding-right: 5px;
 }
 
 .chat-item {
@@ -88,6 +115,7 @@ export default {
   max-width: 400px;
   display: flex;
   flex-direction: column;
+  min-height: min-content;
 }
 
 .message-wrapper {

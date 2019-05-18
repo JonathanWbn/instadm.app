@@ -7,7 +7,7 @@ const cookieSession = require('cookie-session')
 
 const passport = require('./passport.js')
 const config = require('../nuxt.config.js')
-const { getInbox, sendMessage } = require('./instagram.js')
+const { getInbox, sendMessage, getThread } = require('./instagram.js')
 
 config.dev = process.env.NODE_ENV !== 'production'
 
@@ -39,6 +39,15 @@ app
     if (req.user) {
       getInbox(req.user.pk)
         .then(inbox => res.send(inbox))
+        .catch(err => res.status(400).send(err))
+    } else {
+      res.status(404).end('user not found')
+    }
+  })
+  .get('/thread/:id', (req, res) => {
+    if (req.user) {
+      getThread(req.user.pk, req.params.id)
+        .then(thread => res.send(thread))
         .catch(err => res.status(400).send(err))
     } else {
       res.status(404).end('user not found')

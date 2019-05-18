@@ -13,6 +13,7 @@
     "vue/singleline-html-element-content-newline": 0,
     "vue/multiline-html-element-content-newline": 0,
     "vue/html-closing-bracket-spacing": 0,
+    "vue/require-default-prop": 0,
     "vue/html-self-closing": [
       "error",
       {

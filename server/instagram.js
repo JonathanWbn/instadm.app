@@ -23,8 +23,15 @@ const sendMessage = async (_pk, thread_id, message) => {
   return 'sent'
 }
 
+const getThread = async (_pk, thread_id) => {
+  const feed = ig.feed.directThread({ thread_id })
+  const { thread } = await feed.request()
+  return thread
+}
+
 module.exports = {
   login,
   getInbox,
   sendMessage,
+  getThread,
 }
