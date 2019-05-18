@@ -7,19 +7,44 @@
         class="chat-item"
         :class="{ 'user-item': item.user_id !== friend.pk, 'friend-item': item.user_id === friend.pk }"
       >
+        <div
+          v-if="item.reel_share && item.user_id !== friend.pk"
+          class="message-preface"
+        >{{ item.reel_share.type === 'reaction' ? 'You reacted to their story' : 'You replied to their story' }}</div>
+        <div
+          v-if="item.reel_share && item.user_id === friend.pk"
+          class="message-preface friend"
+        >{{ friend.username + (item.reel_share.type === 'reaction' ? ' reacted to your story' : ' replied to your story') }}</div>
         <div class="message-wrapper">
           <img
             v-if="item.user_id === friend.pk && (!items[index - 1] || items[index - 1].user_id !== friend.pk)"
             :src="friend.profile_pic_url"
+            class="profile-thumbnail"
           >
           <div v-else class="image-placeholder"/>
           <div v-if="item.item_type === 'text'" class="message">{{ item.text }}</div>
+          <div
+            v-else-if="item.item_type === 'reel_share'"
+            class="message"
+          >{{ item.reel_share.text }}</div>
+          <div
+            v-else-if="item.item_type === 'media_share' && item.media_share.media_type === 1"
+            class="media-share"
+          >
+            <a :href="item.media_share.image_versions2.candidates[0].url" target="_blank">
+              <img :src="item.media_share.image_versions2.candidates[0].url">
+            </a>
+          </div>
+          <div
+            v-else-if="item.item_type === 'media_share' && item.media_share.media_type === 2"
+            class="media-share"
+          >
+            <video controls>
+              <source :src="item.media_share.video_versions[0].url" type="video/mp4">
+            </video>
+          </div>
+          <div v-else-if="item.item_type === 'like'" class="message">❤️</div>
         </div>
-        <div
-          v-if="item.reel_share"
-          class="message-preface"
-        >{{ item.reel_share.type === 'reaction' ? 'You reacted to their story' : 'You replied to their story' }}</div>
-        <div v-if="item.item_type === 'reel_share'" class="message">{{ item.reel_share.text }}</div>
       </div>
     </div>
     <form v-if="items.length > 0" class="message-form" @submit.prevent="onSubmit">
@@ -53,7 +78,11 @@ export default {
       return this.thread && this.thread.users[0]
     },
     items() {
-      return this.thread ? this.thread.items.concat().sort((a, b) => a.timestamp - b.timestamp) : []
+      return this.thread
+        ? this.thread.items
+            .filter(el => el.item_type !== 'action_log' && el.item_type !== 'placeholder')
+            .sort((a, b) => a.timestamp - b.timestamp)
+        : []
     },
   },
   watch: {
@@ -120,13 +149,14 @@ export default {
 
 .message-wrapper {
   display: flex;
+  align-items: flex-start;
 }
 
 .image-placeholder {
   min-width: 50px;
 }
 
-img {
+.profile-thumbnail {
   min-width: 40px;
   height: 40px;
   border-radius: 100%;
@@ -142,6 +172,10 @@ img {
 .message-preface {
   color: grey;
   margin-bottom: 3px;
+}
+
+.message-preface.friend {
+  margin-left: 50px;
 }
 
 .friend-item {
@@ -201,5 +235,21 @@ img {
 
 .send-button > svg {
   fill: white;
+}
+
+.media-share img {
+  height: 200px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.media-share video {
+  width: 200px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.media-share video:focus {
+  outline: none;
 }
 </style>
