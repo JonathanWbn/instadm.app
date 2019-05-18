@@ -12,12 +12,12 @@ const login = async (username, password) => {
   return loggedInUser
 }
 
-const getInbox = async pk => {
+const getInbox = async () => {
   const inboxFeed = ig.feed.directInbox()
   return await inboxFeed.items()
 }
 
-const sendMessage = async (pk, thread_id, message) => {
+const sendMessage = async (_pk, thread_id, message) => {
   const thread = ig.entity.directThread(thread_id)
   await thread.broadcastText(message)
   return 'sent'

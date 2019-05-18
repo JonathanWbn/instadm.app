@@ -15,12 +15,12 @@
         <div v-if="item.item_type === 'text'" class="message">{{ item.text }}</div>
       </div>
       <div
-        class="message-preface"
         v-if="item.reel_share"
+        class="message-preface"
       >{{ item.reel_share.type === 'reaction' ? 'You reacted to their story' : 'You replied to their story' }}</div>
       <div v-if="item.item_type === 'reel_share'" class="message">{{ item.reel_share.text }}</div>
     </div>
-    <form v-if="items.length > 0" @submit.prevent="onSubmit" class="message-form">
+    <form v-if="items.length > 0" class="message-form" @submit.prevent="onSubmit">
       <input v-model="message" name="message" class="message-input">
       <button type="submit" class="send-button">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
@@ -35,14 +35,29 @@
 
 <script>
 export default {
+  props: {
+    items: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
+    thread: {
+      type: Object,
+      default() {
+        return null
+      },
+    },
+  },
   data() {
     return {
       message: '',
     }
   },
-  props: {
-    items: {},
-    thread: {},
+  computed: {
+    friend() {
+      return this.thread && this.thread.users[0]
+    },
   },
   methods: {
     async onSubmit() {
@@ -51,13 +66,8 @@ export default {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ thread_id: this.thread.thread_id, message: this.message }),
       }
-      const { status, statusText } = await fetch('/send-message', config)
+      await fetch('/send-message', config)
       this.message = ''
-    },
-  },
-  computed: {
-    friend() {
-      return this.thread && this.thread.users[0]
     },
   },
 }

@@ -2,7 +2,7 @@
   <div class="wrapper">
     <h1>Chat</h1>
     <div class="container">
-      <InboxList @select-thread="selectThread" :inbox="inbox"/>
+      <InboxList :inbox="inbox" @select-thread="selectThread"/>
       <ChatContainer :items="items" :thread="selectedThread"/>
     </div>
   </div>
@@ -14,11 +14,20 @@ import InboxList from '~/components/inbox-list'
 import ChatContainer from '~/components/chat-container'
 
 export default {
+  components: {
+    InboxList,
+    ChatContainer,
+  },
   data() {
     return {
       inbox: [],
       selectedThread: null,
     }
+  },
+  computed: {
+    items() {
+      return this.selectedThread ? this.selectedThread.items.concat().sort((a, b) => a.timestamp - b.timestamp) : []
+    },
   },
   created() {
     fetch('/inbox')
@@ -26,18 +35,9 @@ export default {
       .then(res => (this.inbox = res.map(formatThread)))
       .catch(() => (window.location.href = '/login'))
   },
-  components: {
-    InboxList,
-    ChatContainer,
-  },
   methods: {
     selectThread(index) {
       this.selectedThread = this.inbox[index]
-    },
-  },
-  computed: {
-    items() {
-      return this.selectedThread ? this.selectedThread.items.sort((a, b) => a.timestamp - b.timestamp) : []
     },
   },
 }

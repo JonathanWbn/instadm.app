@@ -1,0 +1,23 @@
+{
+  "extends": ["eslint:recommended", "plugin:vue/recommended"],
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 9
+  },
+  "rules": {
+    "vue/max-attributes-per-line": 0,
+    "vue/singleline-html-element-content-newline": 0,
+    "vue/multiline-html-element-content-newline": 0,
+    "vue/html-closing-bracket-spacing": 0,
+    "vue/html-self-closing": [
+      "error",
+      {
+        "svg": "never"
+      }
+    ]
+  }
+}
