@@ -1,16 +1,15 @@
 <template>
   <div class="chat-container">
-    <div id="messages" class="messages">
+    <div id="messages" class="chat-thread">
       <div
         v-for="item in items"
         :key="item.item_id"
-        class="chat-item"
-        :class="item.isFromUser ? 'user-item' : 'friend-item'"
+        :class="['chat-thread-item', item.isFromUser ? 'user' : 'friend']"
       >
         <img
           v-if="!item.isFromUser"
           :src="thread.users[0].profile_pic_url"
-          class="profile-thumbnail"
+          class="chat-profile-thumbnail"
         >
         <Message v-if="item.item_type === 'text'" :item="item"/>
         <ReelShare
@@ -23,16 +22,7 @@
         <Like v-else-if="item.item_type === 'like'"/>
       </div>
     </div>
-    <form v-if="items.length > 0" class="message-form" @submit.prevent="onSubmit">
-      <input v-model="message" name="message" class="message-input">
-      <button type="submit" class="send-button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-          <path
-            d="M24 0l-6 22-8.129-7.239 7.802-8.234-10.458 7.227-7.215-1.754 24-12zm-15 16.668v7.332l3.258-4.431-3.258-2.901z"
-          ></path>
-        </svg>
-      </button>
-    </form>
+    <ChatForm v-if="items.length > 0" @submit="onSubmit"/>
   </div>
 </template>
 
@@ -41,12 +31,14 @@ import Message from './chat-items/message'
 import ReelShare from './chat-items/reel-share'
 import MediaShare from './chat-items/media-share'
 import Like from './chat-items/like'
+import ChatForm from './chat-form'
 
 export default {
   components: {
     Message,
     ReelShare,
     MediaShare,
+    ChatForm,
     Like,
   },
   props: {
@@ -84,13 +76,12 @@ export default {
     this.scrollToBottom()
   },
   methods: {
-    async onSubmit() {
+    async onSubmit(message) {
       const config = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ thread_id: this.threadId, message: this.message }),
+        body: JSON.stringify({ thread_id: this.threadId, message }),
       }
-      this.message = ''
       const { status } = await fetch('/send-message', config)
       if (status === 200) {
         await this.getThread()
@@ -120,14 +111,14 @@ export default {
   justify-content: flex-end;
 }
 
-.messages {
+.chat-thread {
   overflow: auto;
   display: flex;
   flex-direction: column;
   padding-right: 5px;
 }
 
-.chat-item {
+.chat-thread-item {
   margin: 7px 5px;
   max-width: 400px;
   display: flex;
@@ -135,113 +126,36 @@ export default {
   align-items: flex-start;
 }
 
-.image-placeholder {
-  min-width: 50px;
+.chat-thread-item.friend {
+  align-self: flex-start;
+  align-items: flex-start;
 }
 
-.profile-thumbnail {
+.chat-thread-item.friend .chat-message {
+  background-color: lightgray;
+  color: black;
+}
+
+.chat-thread-item.user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.chat-thread-item.user .chat-message {
+  background-color: blue;
+  color: white;
+}
+
+.chat-profile-thumbnail {
   min-width: 40px;
   height: 40px;
   border-radius: 100%;
   margin-right: 10px;
 }
 
-.message {
+.chat-message {
   padding: 5px 15px;
   border-radius: 20px;
   line-height: 26px;
-}
-
-.friend-item {
-  align-self: flex-start;
-  align-items: flex-start;
-}
-
-.user-item {
-  align-self: flex-end;
-  align-items: flex-end;
-}
-
-.friend-item .message {
-  background-color: lightgray;
-  color: black;
-}
-
-.user-item .message {
-  background-color: blue;
-  color: white;
-}
-
-.message-form {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
-  margin: 5px;
-  padding: 10px 15px;
-  border-radius: 5px;
-}
-
-.message-input {
-  flex-grow: 1;
-  border: none;
-  font-size: 14px;
-}
-
-.message-input:focus {
-  outline: none;
-}
-
-.send-button {
-  width: 40px;
-  height: 40px;
-  background-color: lightblue;
-  border: none;
-  border-radius: 100%;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
-  cursor: pointer;
-}
-
-.send-button > svg {
-  fill: white;
-}
-
-.media-share img {
-  height: 200px;
-  border: 1px solid black;
-  border-radius: 5px;
-}
-
-.media-share video {
-  width: 200px;
-  border: 1px solid black;
-  border-radius: 5px;
-}
-
-.media-share video:focus {
-  outline: none;
-}
-
-.reel-share-wrapper {
-  display: flex;
-  flex-direction: column;
-}
-
-.friend-item .reel-share-wrapper {
-  align-items: flex-start;
-}
-
-.user-item .reel-share-wrapper {
-  align-items: flex-end;
-}
-
-.message-preface {
-  color: grey;
-  margin-bottom: 3px;
 }
 </style>

@@ -32,7 +32,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .inbox-list {
   overflow: scroll;
   min-width: 420px;

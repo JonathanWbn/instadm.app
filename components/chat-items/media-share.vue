@@ -23,3 +23,21 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+img {
+  height: 200px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+video {
+  width: 200px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+video:focus {
+  outline: none;
+}
+</style>

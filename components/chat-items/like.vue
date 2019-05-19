@@ -1,3 +1,3 @@
 <template>
-  <div class="message">️❤️️</div>
+  <div class="chat-message">️❤️️</div>
 </template>
