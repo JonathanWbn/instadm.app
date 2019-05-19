@@ -19,6 +19,9 @@
         />
         <MediaShare v-else-if="item.item_type === 'media_share'" :item="item"/>
         <Audio v-else-if="item.item_type === 'audio'" :item="item"/>
+        <VoiceMedia v-else-if="item.item_type === 'voice_media'" :item="item"/>
+        <Media v-else-if="item.item_type === 'media'" :item="item"/>
+        <AnimatedMedia v-else-if="item.item_type === 'animated_media'" :item="item"/>
         <Like v-else-if="item.item_type === 'like'"/>
       </div>
     </div>
@@ -31,6 +34,9 @@ import Message from './chat-items/message'
 import ReelShare from './chat-items/reel-share'
 import MediaShare from './chat-items/media-share'
 import Like from './chat-items/like'
+import VoiceMedia from './chat-items/voice-media'
+import Media from './chat-items/media'
+import AnimatedMedia from './chat-items/animated-media'
 import ChatForm from './chat-form'
 
 export default {
@@ -39,7 +45,10 @@ export default {
     ReelShare,
     MediaShare,
     ChatForm,
+    VoiceMedia,
+    Media,
     Like,
+    AnimatedMedia,
   },
   props: {
     threadId: {
@@ -59,7 +68,10 @@ export default {
     items() {
       return this.thread
         ? this.thread.items
-            .filter(el => el.item_type !== 'action_log' && el.item_type !== 'placeholder')
+            .filter(
+              el =>
+                !['action_log', 'placeholder', 'raven_media', 'video_call_event', 'story_share'].includes(el.item_type)
+            )
             .sort((a, b) => a.timestamp - b.timestamp)
             .map(el => ({ ...el, isFromUser: el.user_id === this.user.pk }))
         : []
