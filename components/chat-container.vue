@@ -5,7 +5,7 @@
         v-for="item in items"
         :key="item.item_id"
         class="chat-item"
-        :class="[ item.isFromUser ? 'user-item' : 'friend-item' ]"
+        :class="item.isFromUser ? 'user-item' : 'friend-item'"
       >
         <img
           v-if="!item.isFromUser"
@@ -18,28 +18,9 @@
           :item="item"
           :friend="thread.users[0]"
         />
-        <div
-          v-else-if="item.item_type === 'media_share' && item.media_share.media_type === 1"
-          class="media-share"
-        >
-          <a :href="item.media_share.image_versions2.candidates[0].url" target="_blank">
-            <img :src="item.media_share.image_versions2.candidates[0].url">
-          </a>
-        </div>
-        <div
-          v-else-if="item.item_type === 'media_share' && item.media_share.media_type === 2"
-          class="media-share"
-        >
-          <video controls>
-            <source :src="item.media_share.video_versions[0].url" type="video/mp4">
-          </video>
-        </div>
-        <div v-else-if="item.item_type === 'audio'" class="audio">
-          <audio controls>
-            <source :src="item.audio_versions[0].url">
-          </audio>
-        </div>
-        <div v-else-if="item.item_type === 'like'" class="message">❤️</div>
+        <MediaShare v-else-if="item.item_type === 'media_share'" :item="item"/>
+        <Audio v-else-if="item.item_type === 'audio'" :item="item"/>
+        <Like v-else-if="item.item_type === 'like'"/>
       </div>
     </div>
     <form v-if="items.length > 0" class="message-form" @submit.prevent="onSubmit">
@@ -58,11 +39,15 @@
 <script>
 import Message from './chat-items/message'
 import ReelShare from './chat-items/reel-share'
+import MediaShare from './chat-items/media-share'
+import Like from './chat-items/like'
 
 export default {
   components: {
     Message,
     ReelShare,
+    MediaShare,
+    Like,
   },
   props: {
     threadId: {
@@ -240,5 +225,23 @@ export default {
 
 .media-share video:focus {
   outline: none;
+}
+
+.reel-share-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.friend-item .reel-share-wrapper {
+  align-items: flex-start;
+}
+
+.user-item .reel-share-wrapper {
+  align-items: flex-end;
+}
+
+.message-preface {
+  color: grey;
+  margin-bottom: 3px;
 }
 </style>

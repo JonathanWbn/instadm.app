@@ -26,23 +26,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.reel-share-wrapper {
-  display: flex;
-  flex-direction: column;
-}
-
-.friend-item .reel-share-wrapper {
-  align-items: flex-start;
-}
-
-.user-item .reel-share-wrapper {
-  align-items: flex-end;
-}
-
-.message-preface {
-  color: grey;
-  margin-bottom: 3px;
-}
-</style>
