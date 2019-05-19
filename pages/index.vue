@@ -3,7 +3,7 @@
     <h1>Chat</h1>
     <div class="container">
       <InboxList :inbox="inbox" @select-thread="selectThread"/>
-      <ChatContainer :thread-id="selectedThreadId"/>
+      <ChatContainer :thread-id="selectedThreadId" :user="user"/>
     </div>
   </div>
 </template>
@@ -22,17 +22,28 @@ export default {
     return {
       inbox: [],
       selectedThreadId: null,
+      user: null,
     }
   },
   created() {
-    fetch('/inbox')
-      .then(res => res.json())
-      .then(res => (this.inbox = res.map(formatThread)))
-      .catch(() => (window.location.href = '/login'))
+    this.getInbox()
+    this.getUser()
   },
   methods: {
     selectThread(index) {
       this.selectedThreadId = this.inbox[index].thread_id
+    },
+    getInbox() {
+      fetch('/inbox')
+        .then(res => res.json())
+        .then(res => (this.inbox = res.map(formatThread)))
+        .catch(() => (window.location.href = '/login'))
+    },
+    getUser() {
+      fetch('/user')
+        .then(res => res.json())
+        .then(res => (this.user = res))
+        .catch(() => (window.location.href = '/login'))
     },
   },
 }

@@ -2,49 +2,44 @@
   <div class="chat-container">
     <div id="messages" class="messages">
       <div
-        v-for="(item, index) in items"
+        v-for="item in items"
         :key="item.item_id"
         class="chat-item"
-        :class="{ 'user-item': item.user_id !== friend.pk, 'friend-item': item.user_id === friend.pk }"
+        :class="[ item.isFromUser ? 'user-item' : 'friend-item' ]"
       >
+        <img
+          v-if="!item.isFromUser"
+          :src="thread.users[0].profile_pic_url"
+          class="profile-thumbnail"
+        >
+        <Message v-if="item.item_type === 'text'" :item="item"/>
+        <ReelShare
+          v-else-if="item.item_type === 'reel_share'"
+          :item="item"
+          :friend="thread.users[0]"
+        />
         <div
-          v-if="item.reel_share && item.user_id !== friend.pk"
-          class="message-preface"
-        >{{ item.reel_share.type === 'reaction' ? 'You reacted to their story' : 'You replied to their story' }}</div>
-        <div
-          v-if="item.reel_share && item.user_id === friend.pk"
-          class="message-preface friend"
-        >{{ friend.username + (item.reel_share.type === 'reaction' ? ' reacted to your story' : ' replied to your story') }}</div>
-        <div class="message-wrapper">
-          <img
-            v-if="item.user_id === friend.pk && (!items[index - 1] || items[index - 1].user_id !== friend.pk)"
-            :src="friend.profile_pic_url"
-            class="profile-thumbnail"
-          >
-          <div v-else class="image-placeholder"/>
-          <div v-if="item.item_type === 'text'" class="message">{{ item.text }}</div>
-          <div
-            v-else-if="item.item_type === 'reel_share'"
-            class="message"
-          >{{ item.reel_share.text }}</div>
-          <div
-            v-else-if="item.item_type === 'media_share' && item.media_share.media_type === 1"
-            class="media-share"
-          >
-            <a :href="item.media_share.image_versions2.candidates[0].url" target="_blank">
-              <img :src="item.media_share.image_versions2.candidates[0].url">
-            </a>
-          </div>
-          <div
-            v-else-if="item.item_type === 'media_share' && item.media_share.media_type === 2"
-            class="media-share"
-          >
-            <video controls>
-              <source :src="item.media_share.video_versions[0].url" type="video/mp4">
-            </video>
-          </div>
-          <div v-else-if="item.item_type === 'like'" class="message">❤️</div>
+          v-else-if="item.item_type === 'media_share' && item.media_share.media_type === 1"
+          class="media-share"
+        >
+          <a :href="item.media_share.image_versions2.candidates[0].url" target="_blank">
+            <img :src="item.media_share.image_versions2.candidates[0].url">
+          </a>
         </div>
+        <div
+          v-else-if="item.item_type === 'media_share' && item.media_share.media_type === 2"
+          class="media-share"
+        >
+          <video controls>
+            <source :src="item.media_share.video_versions[0].url" type="video/mp4">
+          </video>
+        </div>
+        <div v-else-if="item.item_type === 'audio'" class="audio">
+          <audio controls>
+            <source :src="item.audio_versions[0].url">
+          </audio>
+        </div>
+        <div v-else-if="item.item_type === 'like'" class="message">❤️</div>
       </div>
     </div>
     <form v-if="items.length > 0" class="message-form" @submit.prevent="onSubmit">
@@ -61,10 +56,20 @@
 </template>
 
 <script>
+import Message from './chat-items/message'
+import ReelShare from './chat-items/reel-share'
+
 export default {
+  components: {
+    Message,
+    ReelShare,
+  },
   props: {
     threadId: {
       type: String,
+    },
+    user: {
+      type: Object,
     },
   },
   data() {
@@ -74,14 +79,12 @@ export default {
     }
   },
   computed: {
-    friend() {
-      return this.thread && this.thread.users[0]
-    },
     items() {
       return this.thread
         ? this.thread.items
             .filter(el => el.item_type !== 'action_log' && el.item_type !== 'placeholder')
             .sort((a, b) => a.timestamp - b.timestamp)
+            .map(el => ({ ...el, isFromUser: el.user_id === this.user.pk }))
         : []
     },
   },
@@ -97,12 +100,12 @@ export default {
   },
   methods: {
     async onSubmit() {
-      this.message = ''
       const config = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ thread_id: this.threadId, message: this.message }),
       }
+      this.message = ''
       const { status } = await fetch('/send-message', config)
       if (status === 200) {
         await this.getThread()
@@ -124,7 +127,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .chat-container {
   flex-grow: 1;
   display: flex;
@@ -140,15 +143,10 @@ export default {
 }
 
 .chat-item {
-  margin: 5px;
+  margin: 7px 5px;
   max-width: 400px;
   display: flex;
-  flex-direction: column;
   min-height: min-content;
-}
-
-.message-wrapper {
-  display: flex;
   align-items: flex-start;
 }
 
@@ -167,15 +165,6 @@ export default {
   padding: 5px 15px;
   border-radius: 20px;
   line-height: 26px;
-}
-
-.message-preface {
-  color: grey;
-  margin-bottom: 3px;
-}
-
-.message-preface.friend {
-  margin-left: 50px;
 }
 
 .friend-item {

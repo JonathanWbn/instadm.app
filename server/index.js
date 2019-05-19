@@ -53,6 +53,13 @@ app
       res.status(404).end('user not found')
     }
   })
+  .get('/user', (req, res) => {
+    if (req.user) {
+      res.send(req.user)
+    } else {
+      res.status(404).end('user not found')
+    }
+  })
   .post('/send-message', (req, res) => {
     if (req.user) {
       sendMessage(req.user.pk, req.body.thread_id, req.body.message)
