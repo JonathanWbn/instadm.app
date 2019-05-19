@@ -2,14 +2,13 @@
   <div class="wrapper">
     <h1>Chat</h1>
     <div class="container">
-      <InboxList :inbox="inbox" @select-thread="selectThread"/>
+      <InboxList @select-thread="selectThread"/>
       <ChatContainer :thread-id="selectedThreadId" :user="user"/>
     </div>
   </div>
 </template>
 
 <script>
-import { formatThread } from '../utils'
 import InboxList from '~/components/inbox-list'
 import ChatContainer from '~/components/chat-container'
 
@@ -20,24 +19,16 @@ export default {
   },
   data() {
     return {
-      inbox: [],
       selectedThreadId: null,
       user: null,
     }
   },
   created() {
-    this.getInbox()
     this.getUser()
   },
   methods: {
-    selectThread(index) {
-      this.selectedThreadId = this.inbox[index].thread_id
-    },
-    getInbox() {
-      fetch('/inbox')
-        .then(res => res.json())
-        .then(res => (this.inbox = res.map(formatThread)))
-        .catch(() => (window.location.href = '/login'))
+    selectThread(thread_id) {
+      this.selectedThreadId = thread_id
     },
     getUser() {
       fetch('/user')

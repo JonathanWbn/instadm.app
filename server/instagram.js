@@ -2,6 +2,7 @@ const { IgApiClient } = require('instagram-private-api')
 
 const ig = new IgApiClient()
 const threads = {}
+const inboxes = {}
 
 const login = async (username, password) => {
   ig.state.generateDevice(username)
@@ -13,11 +14,26 @@ const login = async (username, password) => {
   return loggedInUser
 }
 
-const getInbox = async (_req, res) => {
+const getInbox = async (req, res) => {
   try {
-    const inboxFeed = ig.feed.directInbox()
-    const inbox = await inboxFeed.items()
-    res.send(inbox)
+    inboxes[req.user.pk] = ig.feed.directInbox()
+    const inbox = await inboxes[req.user.pk].items()
+    res.send({
+      inbox,
+      moreAvailable: inboxes[req.user.pk].moreAvailable,
+    })
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
+const getMoreInbox = async (req, res) => {
+  try {
+    const inbox = await inboxes[req.user.pk].items()
+    res.send({
+      inbox,
+      moreAvailable: inboxes[req.user.pk].moreAvailable,
+    })
   } catch (e) {
     res.status(400).send(e)
   }
@@ -67,6 +83,7 @@ const getMoreThreadItems = async (req, res) => {
 module.exports = {
   login,
   getInbox,
+  getMoreInbox,
   sendMessage,
   getThread,
   getMoreThreadItems,

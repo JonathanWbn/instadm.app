@@ -13,20 +13,44 @@
       </div>
       <div class="last-activity">{{ item.last_activity_date }}</div>
     </div>
+    <button v-if="moreInboxAvailable" @click="getMoreInbox">Get more</button>
   </div>
 </template>
 
 <script>
+import { formatThread } from '../utils'
+
 export default {
-  props: {
-    inbox: {
-      type: Array,
-      required: true,
-    },
+  data() {
+    return {
+      inbox: [],
+      moreInboxAvailable: false,
+    }
+  },
+  created() {
+    this.getInbox()
   },
   methods: {
     selectThread(index) {
-      this.$emit('select-thread', index)
+      this.$emit('select-thread', this.inbox[index].thread_id)
+    },
+    getInbox() {
+      fetch('/inbox')
+        .then(res => res.json())
+        .then(res => {
+          this.moreInboxAvailable = res.moreAvailable
+          this.inbox = res.inbox.map(formatThread)
+        })
+        .catch(() => (window.location.href = '/login'))
+    },
+    getMoreInbox() {
+      fetch('/more-inbox')
+        .then(res => res.json())
+        .then(res => {
+          this.moreInboxAvailable = res.moreAvailable
+          this.inbox = [...this.inbox, ...res.inbox.map(formatThread)]
+        })
+        .catch(() => (window.location.href = '/login'))
     },
   },
 }

@@ -87,25 +87,23 @@ export default {
     },
   },
   methods: {
-    async onSubmit(message) {
-      const config = {
+    onSubmit(message) {
+      fetch('/send-message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ thread_id: this.threadId, message }),
-      }
-      const { status } = await fetch('/send-message', config)
-      if (status === 200) {
-        await this.getThread()
-      }
+      })
+        .then(res => res.json())
+        .then(() => this.getThread())
     },
-    async getThread(id = this.threadId) {
-      const res = await fetch(`/thread/${id}`)
-      if (res.status === 200) {
-        const { thread, moreAvailable } = await res.json()
-        this.thread = thread
-        this.moreAvailable = moreAvailable
-        setTimeout(this.scrollToBottom, 10)
-      }
+    getThread(id = this.threadId) {
+      fetch(`/thread/${id}`)
+        .then(res => res.json())
+        .then(({ thread, moreAvailable }) => {
+          this.thread = thread
+          this.moreAvailable = moreAvailable
+          setTimeout(this.scrollToBottom, 10)
+        })
     },
     scrollToBottom() {
       const container = this.$el.querySelector('#messages')
@@ -113,16 +111,16 @@ export default {
         container.scrollTop = container.scrollHeight
       }
     },
-    async loadMoreItems() {
-      const res = await fetch(`/more-items/${this.threadId}`)
-      if (res.status === 200) {
-        const { items, moreAvailable } = await res.json()
-        this.thread = {
-          ...this.thread,
-          items: [...this.thread.items, ...items],
-        }
-        this.moreAvailable = moreAvailable
-      }
+    loadMoreItems() {
+      fetch(`/more-items/${this.threadId}`)
+        .then(res => res.json())
+        .then(({ items, moreAvailable }) => {
+          this.thread = {
+            ...this.thread,
+            items: [...this.thread.items, ...items],
+          }
+          this.moreAvailable = moreAvailable
+        })
     },
   },
 }
