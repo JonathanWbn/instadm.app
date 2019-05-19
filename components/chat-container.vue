@@ -1,6 +1,7 @@
 <template>
   <div class="chat-container">
     <div id="messages" class="chat-thread">
+      <button v-if="moreAvailable" class="load-more-button" @click="loadMoreItems">Load more</button>
       <div
         v-for="item in items"
         :key="item.item_id"
@@ -62,6 +63,7 @@ export default {
     return {
       message: '',
       thread: null,
+      moreAvailable: false,
     }
   },
   computed: {
@@ -84,9 +86,6 @@ export default {
       }
     },
   },
-  updated() {
-    this.scrollToBottom()
-  },
   methods: {
     async onSubmit(message) {
       const config = {
@@ -102,13 +101,27 @@ export default {
     async getThread(id = this.threadId) {
       const res = await fetch(`/thread/${id}`)
       if (res.status === 200) {
-        this.thread = await res.json()
+        const { thread, moreAvailable } = await res.json()
+        this.thread = thread
+        this.moreAvailable = moreAvailable
+        setTimeout(this.scrollToBottom, 10)
       }
     },
     scrollToBottom() {
       const container = this.$el.querySelector('#messages')
       if (container) {
         container.scrollTop = container.scrollHeight
+      }
+    },
+    async loadMoreItems() {
+      const res = await fetch(`/more-items/${this.threadId}`)
+      if (res.status === 200) {
+        const { items, moreAvailable } = await res.json()
+        this.thread = {
+          ...this.thread,
+          items: [...this.thread.items, ...items],
+        }
+        this.moreAvailable = moreAvailable
       }
     },
   },
@@ -169,5 +182,27 @@ export default {
   padding: 5px 15px;
   border-radius: 20px;
   line-height: 26px;
+}
+
+.load-more-button {
+  border: none;
+  align-self: center;
+  color: white;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-weight: 600;
+  font-size: 13px;
+  background-color: #ff9800;
+  box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+.load-more-button:focus {
+  outline: none;
+}
+
+.load-more-button:hover {
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 }
 </style>

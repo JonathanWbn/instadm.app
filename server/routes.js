@@ -1,6 +1,6 @@
 const router = require('express').Router()
 
-const { getInbox, sendMessage, getThread } = require('./instagram.js')
+const { getInbox, sendMessage, getThread, getMoreThreadItems } = require('./instagram.js')
 const passport = require('./passport.js')
 
 function isLoggedIn(req, res, next) {
@@ -15,6 +15,8 @@ router.get('/', isLoggedIn)
 router.get('/inbox', isLoggedIn, getInbox)
 
 router.get('/thread/:id', isLoggedIn, getThread)
+
+router.get('/more-items/:id', isLoggedIn, getMoreThreadItems)
 
 router.get('/user', isLoggedIn, (req, res) => {
   res.send(req.user)
