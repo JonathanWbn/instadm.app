@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <a :href="item.animated_media.images.fixed_height.url" target="_blank">
-      <img :src="item.animated_media.images.fixed_height.url">
+  <div class="wrapper" :style="{ height: `${media.height / media.width * 200}px` }">
+    <a :href="media.url" target="_blank">
+      <img :src="media.url">
     </a>
   </div>
 </template>
@@ -14,13 +14,23 @@ export default {
       required: true,
     },
   },
+  computed: {
+    media() {
+      return this.item.animated_media.images.fixed_height
+    },
+  },
 }
 </script>
 
 <style scoped>
-img {
-  width: 200px;
+.wrapper {
   border: 1px solid black;
   border-radius: 5px;
+  overflow: hidden;
+}
+
+img,
+.wrapper {
+  width: 200px;
 }
 </style>

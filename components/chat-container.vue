@@ -102,7 +102,9 @@ export default {
         .then(({ thread, moreAvailable }) => {
           this.thread = thread
           this.moreAvailable = moreAvailable
-          setTimeout(this.scrollToBottom, 10)
+          this.$nextTick(() => {
+            this.scrollToBottom()
+          })
         })
     },
     scrollToBottom() {

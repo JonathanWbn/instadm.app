@@ -1,15 +1,23 @@
 <template>
   <div>
-    <a
+    <div
       v-if="item.media_share.media_type === 1"
-      :href="item.media_share.image_versions2.candidates[0].url"
-      target="_blank"
+      class="wrapper"
+      :style="{ height: `${media.height / media.width * 200}px` }"
     >
-      <img :src="item.media_share.image_versions2.candidates[0].url">
-    </a>
-    <video v-else-if="item.media_share.media_type === 2" controls>
-      <source :src="item.media_share.video_versions[0].url" type="video/mp4">
-    </video>
+      <a :href="media.url" target="_blank">
+        <img :src="media.url">
+      </a>
+    </div>
+    <div
+      v-else-if="item.media_share.media_type === 2"
+      class="wrapper"
+      :style="{ height: `${media.height / media.width * 200}px` }"
+    >
+      <video controls>
+        <source :src="media.url" type="video/mp4">
+      </video>
+    </div>
   </div>
 </template>
 
@@ -21,20 +29,32 @@ export default {
       required: true,
     },
   },
+  computed: {
+    media() {
+      switch (this.item.media_share.media_type) {
+        case 1:
+          return this.item.media_share.image_versions2.candidates[0]
+        case 2:
+          return this.item.media_share.video_versions[0]
+        default:
+          return {}
+      }
+    },
+  },
 }
 </script>
 
 <style scoped>
-img {
+img,
+video,
+.wrapper {
   width: 200px;
-  border: 1px solid black;
-  border-radius: 5px;
 }
 
-video {
-  width: 200px;
+.wrapper {
   border: 1px solid black;
   border-radius: 5px;
+  overflow: hidden;
 }
 
 video:focus {
