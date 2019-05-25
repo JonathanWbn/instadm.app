@@ -9,15 +9,11 @@
       >
         <img
           v-if="!item.isFromUser"
-          :src="thread.users[0].profile_pic_url"
+          :src="item.user.profile_pic_url"
           class="chat-profile-thumbnail"
         >
         <Message v-if="item.item_type === 'text'" :item="item"/>
-        <ReelShare
-          v-else-if="item.item_type === 'reel_share'"
-          :item="item"
-          :friend="thread.users[0]"
-        />
+        <ReelShare v-else-if="item.item_type === 'reel_share'" :item="item" :friend="item.user"/>
         <MediaShare v-else-if="item.item_type === 'media_share'" :item="item"/>
         <Audio v-else-if="item.item_type === 'audio'" :item="item"/>
         <VoiceMedia v-else-if="item.item_type === 'voice_media'" :item="item"/>
@@ -77,7 +73,14 @@ export default {
                 !['action_log', 'placeholder', 'raven_media', 'video_call_event', 'story_share'].includes(el.item_type)
             )
             .sort((a, b) => a.timestamp - b.timestamp)
-            .map(el => ({ ...el, isFromUser: el.user_id === this.user.pk }))
+            .map(item => {
+              const isFromUser = item.user_id === this.user.pk
+              return {
+                ...item,
+                isFromUser,
+                user: isFromUser ? this.user : this.thread.users.find(user => item.user_id === user.pk),
+              }
+            })
         : []
     },
   },
