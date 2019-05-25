@@ -13,14 +13,18 @@
       </div>
       <div class="last-activity">{{ item.last_activity_date }}</div>
     </div>
-    <button v-if="moreInboxAvailable" @click="getMoreInbox">Get more</button>
+    <LoadMoreButton v-if="moreInboxAvailable" @click="getMoreInbox"/>
   </div>
 </template>
 
 <script>
+import LoadMoreButton from './load-more-button'
 import { formatThread } from '../utils'
 
 export default {
+  components: {
+    LoadMoreButton,
+  },
   data() {
     return {
       inbox: [],
@@ -60,6 +64,9 @@ export default {
 .inbox-list {
   overflow: scroll;
   min-width: 420px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
 }
 
 .inbox-item {
@@ -67,7 +74,7 @@ export default {
   background-color: white;
   border-radius: 5px;
   padding: 20px;
-  margin: 10px;
+  margin-bottom: 10px;
   box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
   position: relative;
   display: flex;
