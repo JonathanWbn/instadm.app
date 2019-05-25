@@ -40,10 +40,5 @@ export default {
 .wrapper.user {
   align-items: flex-end;
 }
-
-.message-preface {
-  color: grey;
-  margin-bottom: 3px;
-}
 </style>
 

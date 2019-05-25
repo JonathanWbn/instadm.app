@@ -20,9 +20,10 @@
         <Media v-else-if="item.item_type === 'media'" :item="item"/>
         <AnimatedMedia v-else-if="item.item_type === 'animated_media'" :item="item"/>
         <Like v-else-if="item.item_type === 'like'"/>
+        <StoryShare v-else-if="item.item_type === 'story_share'" :item="item" :friend="item.user"/>
       </div>
     </div>
-    <ChatForm v-if="items.length > 0" @submit="onSubmit"/>
+    <ChatForm v-if="threadId" @submit="onSubmit"/>
   </div>
 </template>
 
@@ -34,6 +35,7 @@ import Like from './chat-items/like'
 import VoiceMedia from './chat-items/voice-media'
 import Media from './chat-items/media'
 import AnimatedMedia from './chat-items/animated-media'
+import StoryShare from './chat-items/story-share'
 import ChatForm from './chat-form'
 import LoadMoreButton from './load-more-button'
 
@@ -48,6 +50,7 @@ export default {
     Like,
     AnimatedMedia,
     LoadMoreButton,
+    StoryShare,
   },
   props: {
     threadId: {
@@ -68,10 +71,7 @@ export default {
     items() {
       return this.thread
         ? this.thread.items
-            .filter(
-              el =>
-                !['action_log', 'placeholder', 'raven_media', 'video_call_event', 'story_share'].includes(el.item_type)
-            )
+            .filter(el => !['action_log', 'placeholder', 'raven_media', 'video_call_event'].includes(el.item_type))
             .sort((a, b) => a.timestamp - b.timestamp)
             .map(item => {
               const isFromUser = item.user_id === this.user.pk
@@ -187,5 +187,10 @@ export default {
   padding: 5px 15px;
   border-radius: 20px;
   line-height: 26px;
+}
+
+.message-preface {
+  color: grey;
+  margin-bottom: 3px;
 }
 </style>
