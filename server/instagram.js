@@ -49,6 +49,16 @@ const sendMessage = async (req, res) => {
   }
 }
 
+const sendPhoto = async (req, res) => {
+  try {
+    const thread = ig.entity.directThread(req.body.thread_id)
+    await thread.broadcastPhoto({ file: req.body.image })
+    res.send('sent')
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 const getThread = async (req, res) => {
   try {
     const thread_id = req.params.id
@@ -87,4 +97,5 @@ module.exports = {
   sendMessage,
   getThread,
   getMoreThreadItems,
+  sendPhoto,
 }

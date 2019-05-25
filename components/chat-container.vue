@@ -23,7 +23,7 @@
         <StoryShare v-else-if="item.item_type === 'story_share'" :item="item" :friend="item.user"/>
       </div>
     </div>
-    <ChatForm v-if="threadId" @submit="onSubmit"/>
+    <ChatForm v-if="threadId" @refetch="getThread"/>
   </div>
 </template>
 
@@ -92,15 +92,6 @@ export default {
     },
   },
   methods: {
-    onSubmit(message) {
-      fetch('/send-message', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ thread_id: this.threadId, message }),
-      })
-        .then(res => res.json())
-        .then(() => this.getThread())
-    },
     getThread(id = this.threadId) {
       fetch(`/thread/${id}`)
         .then(res => res.json())
