@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div class="wrapper">
+    <div class="header">{{ item.media_share.user.full_name }}</div>
     <div
       v-if="item.media_share.media_type === 1"
-      class="wrapper"
+      class="container"
       :style="{ height: `${media.height / media.width * 200}px` }"
     >
       <a :href="media.url" target="_blank">
@@ -11,7 +12,7 @@
     </div>
     <div
       v-else-if="item.media_share.media_type === 2"
-      class="wrapper"
+      class="container"
       :style="{ height: `${media.height / media.width * 200}px` }"
     >
       <video controls>
@@ -45,16 +46,25 @@ export default {
 </script>
 
 <style scoped>
-img,
-video,
 .wrapper {
-  width: 200px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  border: 1px solid darkgrey;
+  overflow: hidden;
 }
 
-.wrapper {
-  border: 1px solid black;
-  border-radius: 5px;
-  overflow: hidden;
+.header {
+  background-color: white;
+  padding: 5px;
+  text-align: center;
+  border-bottom: 1px solid darkgrey;
+}
+
+img,
+video,
+.container {
+  width: 200px;
 }
 
 video:focus {

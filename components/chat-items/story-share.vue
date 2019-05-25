@@ -1,7 +1,8 @@
 <template>
   <div :class="['wrapper', item.isFromUser ? 'user': 'friend']">
-    <div v-if="item.isFromUser" class="message-preface">You shared "someones" story.</div>
-    <div v-else class="message-preface">{{ friend.username }} shared "someones" story.</div>
+    <div
+      class="message-preface"
+    >{{ item.story_share.title || `Sent @${item.story_share.media.user.username}'s story` }}</div>
     <div v-if="isExpired" class="expired">No longer available.</div>
     <div
       v-else-if="item.story_share.media.media_type === 1"
