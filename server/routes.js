@@ -1,7 +1,11 @@
 const router = require('express').Router()
+const multer = require('multer')
 
 const { getInbox, sendMessage, getThread, getMoreThreadItems, getMoreInbox, sendPhoto } = require('./instagram.js')
 const passport = require('./passport.js')
+
+const storage = multer.memoryStorage()
+const upload = multer({ storage })
 
 function isLoggedIn(req, res, next) {
   if (req.user) next()
@@ -26,6 +30,6 @@ router.get('/user', isLoggedIn, (req, res) => {
 
 router.post('/send-message', isLoggedIn, sendMessage)
 
-router.post('/send-photo', isLoggedIn, sendPhoto)
+router.post('/send-photo/:thread_id', isLoggedIn, upload.single('file'), sendPhoto)
 
 module.exports = router

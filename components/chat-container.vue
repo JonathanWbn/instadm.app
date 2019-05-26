@@ -23,7 +23,7 @@
         <StoryShare v-else-if="item.item_type === 'story_share'" :item="item" :friend="item.user"/>
       </div>
     </div>
-    <ChatForm v-if="threadId" @refetch="getThread"/>
+    <ChatForm v-if="threadId" :thread-id="threadId" @refetch="getThread"/>
   </div>
 </template>
 
