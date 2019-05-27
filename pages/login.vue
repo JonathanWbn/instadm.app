@@ -21,6 +21,11 @@
 
 <script>
 export default {
+  head() {
+    return {
+      title: 'Login - Instagram DM',
+    }
+  },
   data() {
     return {
       username: null,
