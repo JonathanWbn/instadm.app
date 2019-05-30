@@ -16,17 +16,17 @@
       </div>
       <div class="last-activity">{{ item.last_activity_date }}</div>
     </div>
-    <LoadMoreButton v-if="moreInboxAvailable" @click="getMoreInbox"/>
+    <infinite-loading v-if="inbox.length > 0" @infinite="getMoreInbox"/>
   </div>
 </template>
 
 <script>
-import LoadMoreButton from './load-more-button'
+import InfiniteLoading from 'vue-infinite-loading'
 import { formatThread } from '../utils'
 
 export default {
   components: {
-    LoadMoreButton,
+    InfiniteLoading,
   },
   data() {
     return {
@@ -50,12 +50,15 @@ export default {
         })
         .catch(() => (window.location.href = '/login'))
     },
-    getMoreInbox() {
+    getMoreInbox($state) {
       fetch('/more-inbox')
         .then(res => res.json())
         .then(res => {
           this.moreInboxAvailable = res.moreAvailable
           this.inbox = [...this.inbox, ...res.inbox.map(formatThread)]
+
+          if (res.moreAvailable) $state.loaded()
+          else $state.complete()
         })
         .catch(() => (window.location.href = '/login'))
     },

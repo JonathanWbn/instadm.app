@@ -1,7 +1,9 @@
 <template>
   <div class="chat-container">
     <div id="messages" class="chat-thread">
-      <LoadMoreButton v-if="moreAvailable" @click="loadMoreItems"/>
+      <infinite-loading v-if="thread" direction="top" @infinite="loadMoreItems">
+        <div slot="no-more" class="no-more-messages">No more messages.</div>
+      </infinite-loading>
       <div
         v-for="item in items"
         :key="item.item_id"
@@ -28,6 +30,7 @@
 </template>
 
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 import Message from './chat-items/message'
 import ReelShare from './chat-items/reel-share'
 import MediaShare from './chat-items/media-share'
@@ -37,7 +40,6 @@ import Media from './chat-items/media'
 import AnimatedMedia from './chat-items/animated-media'
 import StoryShare from './chat-items/story-share'
 import ChatForm from './chat-form'
-import LoadMoreButton from './load-more-button'
 
 export default {
   components: {
@@ -49,8 +51,8 @@ export default {
     Media,
     Like,
     AnimatedMedia,
-    LoadMoreButton,
     StoryShare,
+    InfiniteLoading,
   },
   props: {
     threadId: {
@@ -109,7 +111,7 @@ export default {
         container.scrollTop = container.scrollHeight
       }
     },
-    loadMoreItems() {
+    loadMoreItems($state) {
       fetch(`/more-items/${this.threadId}`)
         .then(res => res.json())
         .then(({ items, moreAvailable }) => {
@@ -118,6 +120,9 @@ export default {
             items: [...this.thread.items, ...items],
           }
           this.moreAvailable = moreAvailable
+
+          if (moreAvailable) $state.loaded()
+          else $state.complete()
         })
     },
   },
@@ -183,5 +188,9 @@ export default {
 .message-preface {
   color: grey;
   margin-bottom: 3px;
+}
+
+.no-more-messages {
+  color: grey;
 }
 </style>
