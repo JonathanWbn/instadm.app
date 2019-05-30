@@ -7,15 +7,36 @@
         class="emoji-toggle"
         @click.prevent="toggleEmojiPicker"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <svg
+          v-if="showEmojiPicker"
+          width="24"
+          height="24"
+          xmlns="http://www.w3.org/2000/svg"
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+        >
+          <path
+            d="M12 11.293l10.293-10.293.707.707-10.293 10.293 10.293 10.293-.707.707-10.293-10.293-10.293 10.293-.707-.707 10.293-10.293-10.293-10.293.707-.707 10.293 10.293z"
+          ></path>
+        </svg>
+        <svg v-else xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path
             d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.507 13.941c-1.512 1.195-3.174 1.931-5.506 1.931-2.334 0-3.996-.736-5.508-1.931l-.493.493c1.127 1.72 3.2 3.566 6.001 3.566 2.8 0 4.872-1.846 5.999-3.566l-.493-.493zm-9.007-5.941c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5-.672-1.5-1.5-1.5zm7 0c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5-.672-1.5-1.5-1.5z"
           ></path>
         </svg>
       </button>
-      <div v-if="showEmojiPicker">Emoji Picker</div>
+      <picker
+        v-if="showEmojiPicker"
+        :auto-focus="true"
+        color="orange"
+        :show-preview="false"
+        :show-categories="false"
+        :show-skin-tones="false"
+        :emoji-tooltip="true"
+        @select="addEmoji"
+      />
       <img v-if="filePreviewUrl" class="file-preview" :src="filePreviewUrl">
-      <input v-else v-model="message" name="message" class="text-input">
+      <input v-else ref="text-input" v-model="message" name="message" class="text-input">
       <div v-if="filePreviewUrl" class="file-preview-close" @click="clearFile">x</div>
       <input
         id="file"
@@ -45,8 +66,13 @@
 
 <script>
 import FormData from 'form-data'
+import { Picker } from 'emoji-mart-vue-fast'
+import 'emoji-mart-vue-fast/css/emoji-mart.css'
 
 export default {
+  components: {
+    Picker,
+  },
   props: {
     threadId: {
       type: String,
@@ -72,6 +98,7 @@ export default {
       } else {
         this.sendMessage()
       }
+      this.showEmojiPicker = false
     },
     onFileUpload(e) {
       this.file = e.target.files[0]
@@ -103,6 +130,10 @@ export default {
     toggleEmojiPicker() {
       this.showEmojiPicker = !this.showEmojiPicker
     },
+    addEmoji(emoji) {
+      this.message = this.message + emoji.native
+      this.$refs['text-input'].focus()
+    },
   },
 }
 </script>
@@ -117,6 +148,7 @@ form {
   margin: 5px;
   padding: 10px 15px;
   border-radius: 5px;
+  position: relative;
 }
 
 .file-preview {
@@ -133,7 +165,7 @@ form {
 .text-input {
   flex-grow: 1;
   border: none;
-  font-size: 14px;
+  font-size: 15px;
   resize: none;
   height: 40px;
 }
@@ -188,5 +220,14 @@ form {
 
 .emoji-toggle:hover > svg {
   fill: black;
+}
+
+.emoji-mart {
+  position: absolute;
+  left: 0px;
+  bottom: 70px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
+  border-radius: 5px;
 }
 </style>
