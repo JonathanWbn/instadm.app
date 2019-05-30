@@ -56,8 +56,4 @@ video,
   border-radius: 5px;
   overflow: hidden;
 }
-
-video:focus {
-  outline: none;
-}
 </style>

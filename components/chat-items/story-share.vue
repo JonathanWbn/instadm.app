@@ -69,10 +69,6 @@ video,
   overflow: hidden;
 }
 
-video:focus {
-  outline: none;
-}
-
 .wrapper {
   display: flex;
   flex-direction: column;

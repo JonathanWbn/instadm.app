@@ -22,8 +22,4 @@ audio {
   border: 1px solid black;
   border-radius: 5px;
 }
-
-audio:focus {
-  outline: none;
-}
 </style>

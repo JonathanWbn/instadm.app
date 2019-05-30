@@ -66,8 +66,4 @@ video,
 .container {
   width: 200px;
 }
-
-video:focus {
-  outline: none;
-}
 </style>

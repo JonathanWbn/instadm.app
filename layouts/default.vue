@@ -22,6 +22,7 @@ html {
 *:after {
   box-sizing: border-box;
   margin: 0;
+  outline: none;
 }
 
 .nuxt-wrapper {
