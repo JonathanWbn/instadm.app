@@ -1,22 +1,26 @@
 const { IgApiClient } = require('instagram-private-api')
 
-const ig = new IgApiClient()
+const igSessions = {}
 const threads = {}
 const inboxes = {}
 
 const login = async (username, password) => {
-  ig.state.generateDevice(username)
+  const igSession = new IgApiClient()
+  igSession.state.generateDevice(username)
 
-  await ig.simulate.preLoginFlow()
-  const loggedInUser = await ig.account.login(username, password)
-  await ig.simulate.postLoginFlow()
+  await igSession.simulate.preLoginFlow()
+  const loggedInUser = await igSession.account.login(username, password)
+  await igSession.simulate.postLoginFlow()
+
+  igSessions[loggedInUser.pk] = igSession
 
   return loggedInUser
 }
 
 const getInbox = async (req, res) => {
   try {
-    inboxes[req.user.pk] = ig.feed.directInbox()
+    const igSession = igSessions[req.user.pk]
+    inboxes[req.user.pk] = igSession.feed.directInbox()
     const inbox = await inboxes[req.user.pk].items()
     res.send({
       inbox,
@@ -41,7 +45,8 @@ const getMoreInbox = async (req, res) => {
 
 const sendMessage = async (req, res) => {
   try {
-    const thread = ig.entity.directThread(req.body.thread_id)
+    const igSession = igSessions[req.user.pk]
+    const thread = igSession.entity.directThread(req.body.thread_id)
     await thread.broadcastText(req.body.message)
     res.send({ success: true })
   } catch (e) {
@@ -51,7 +56,8 @@ const sendMessage = async (req, res) => {
 
 const sendPhoto = async (req, res) => {
   try {
-    const thread = ig.entity.directThread(req.params.thread_id)
+    const igSession = igSessions[req.user.pk]
+    const thread = igSession.entity.directThread(req.params.thread_id)
     await thread.broadcastPhoto({ file: req.file.buffer })
     res.send({ success: true })
   } catch (e) {
@@ -61,8 +67,9 @@ const sendPhoto = async (req, res) => {
 
 const getThread = async (req, res) => {
   try {
+    const igSession = igSessions[req.user.pk]
     const thread_id = req.params.id
-    threads[thread_id] = ig.feed.directThread({ thread_id: thread_id })
+    threads[thread_id] = igSession.feed.directThread({ thread_id })
     const { thread } = await threads[thread_id].request()
     const moreItems = await threads[thread_id].items()
     res.send({

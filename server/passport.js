@@ -13,12 +13,12 @@ passport.use(
   })
 )
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser((user, done) => {
   store[user.pk] = user
   done(null, user.pk)
 })
 
-passport.deserializeUser(function(pk, done) {
+passport.deserializeUser((pk, done) => {
   done(null, store[pk] || null)
 })
 
