@@ -2,17 +2,15 @@ const router = require('express').Router()
 const multer = require('multer')
 
 const { getInbox, sendMessage, getThread, getMoreThreadItems, getMoreInbox, sendPhoto } = require('./instagram.js')
+const { logout, getUser, isLoggedIn } = require('./session.js')
 const passport = require('./passport.js')
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage })
 
-function isLoggedIn(req, res, next) {
-  if (req.user) next()
-  else res.status(301).redirect('/login')
-}
-
 router.post('/login', passport.authenticate('local'))
+
+router.post('/logout', isLoggedIn, logout)
 
 router.get('/', isLoggedIn)
 
@@ -24,9 +22,7 @@ router.get('/thread/:id', isLoggedIn, getThread)
 
 router.get('/more-items/:id', isLoggedIn, getMoreThreadItems)
 
-router.get('/user', isLoggedIn, (req, res) => {
-  res.send(req.user)
-})
+router.get('/user', isLoggedIn, getUser)
 
 router.post('/send-message', isLoggedIn, sendMessage)
 
