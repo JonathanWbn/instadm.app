@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import InboxList from '~/components/inbox-list'
 import ChatContainer from '~/components/chat-container'
 
@@ -38,13 +39,13 @@ export default {
       this.selectedThreadId = thread_id
     },
     getUser() {
-      fetch('/user')
-        .then(res => res.json())
-        .then(res => (this.user = res))
+      axios
+        .get('/user')
+        .then(({ data }) => (this.user = data))
         .catch(() => (window.location.href = '/login'))
     },
     logout() {
-      fetch('/logout', { method: 'POST' }).then(() => (window.location.href = '/'))
+      axios.post('/logout').then(() => (window.location.href = '/'))
     },
   },
 }

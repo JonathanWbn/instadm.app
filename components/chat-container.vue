@@ -40,6 +40,7 @@ import Media from './chat-items/media'
 import AnimatedMedia from './chat-items/animated-media'
 import StoryShare from './chat-items/story-share'
 import ChatForm from './chat-form'
+import axios from 'axios'
 
 export default {
   components: {
@@ -95,15 +96,13 @@ export default {
   },
   methods: {
     getThread(id = this.threadId) {
-      fetch(`/thread/${id}`)
-        .then(res => res.json())
-        .then(({ thread, moreAvailable }) => {
-          this.thread = thread
-          this.moreAvailable = moreAvailable
-          this.$nextTick(() => {
-            this.scrollToBottom()
-          })
+      axios.get(`/thread/${id}`).then(({ data: { thread, moreAvailable } }) => {
+        this.thread = thread
+        this.moreAvailable = moreAvailable
+        this.$nextTick(() => {
+          this.scrollToBottom()
         })
+      })
     },
     scrollToBottom() {
       const container = this.$el.querySelector('#messages')
@@ -112,18 +111,16 @@ export default {
       }
     },
     loadMoreItems($state) {
-      fetch(`/more-items/${this.threadId}`)
-        .then(res => res.json())
-        .then(({ items, moreAvailable }) => {
-          this.thread = {
-            ...this.thread,
-            items: [...this.thread.items, ...items],
-          }
-          this.moreAvailable = moreAvailable
+      axios.get(`/more-items/${this.threadId}`).then(({ data: { items, moreAvailable } }) => {
+        this.thread = {
+          ...this.thread,
+          items: [...this.thread.items, ...items],
+        }
+        this.moreAvailable = moreAvailable
 
-          if (moreAvailable) $state.loaded()
-          else $state.complete()
-        })
+        if (moreAvailable) $state.loaded()
+        else $state.complete()
+      })
     },
   },
 }

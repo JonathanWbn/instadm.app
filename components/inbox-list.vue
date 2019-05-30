@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import InfiniteLoading from 'vue-infinite-loading'
 import { formatThread } from '../utils'
 
@@ -42,20 +43,20 @@ export default {
       this.$emit('select-thread', this.inbox[index].thread_id)
     },
     getInbox() {
-      fetch('/inbox')
-        .then(res => res.json())
-        .then(res => {
-          this.moreInboxAvailable = res.moreAvailable
-          this.inbox = res.inbox.map(formatThread)
+      axios
+        .get('/inbox')
+        .then(({ data }) => {
+          this.moreInboxAvailable = data.moreAvailable
+          this.inbox = data.inbox.map(formatThread)
         })
         .catch(() => (window.location.href = '/login'))
     },
     getMoreInbox($state) {
-      fetch('/more-inbox')
-        .then(res => res.json())
-        .then(res => {
-          this.moreInboxAvailable = res.moreAvailable
-          this.inbox = [...this.inbox, ...res.inbox.map(formatThread)]
+      axios
+        .get('/more-inbox')
+        .then(({ data }) => {
+          this.moreInboxAvailable = data.moreAvailable
+          this.inbox = [...this.inbox, ...data.inbox.map(formatThread)]
 
           if (res.moreAvailable) $state.loaded()
           else $state.complete()

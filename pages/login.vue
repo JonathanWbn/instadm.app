@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   head() {
     return {
@@ -38,19 +40,16 @@ export default {
     async onSubmit() {
       if (!this.username || !this.password) return
       this.isLoading = true
-      const config = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: this.username, password: this.password }),
-      }
-      const { status, statusText } = await fetch('/login', config)
-      if (status === 200) {
-        this.isLoading = false
-        window.location.href = '/'
-      } else {
-        this.isLoading = false
-        this.error = statusText
-      }
+      axios
+        .post('/login', { username: this.username, password: this.password })
+        .then(() => {
+          this.isLoading = false
+          window.location.href = '/'
+        })
+        .catch(err => {
+          this.isLoading = false
+          this.error = err.message
+        })
     },
   },
 }

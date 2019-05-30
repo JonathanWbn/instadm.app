@@ -9,7 +9,7 @@ const getUser = (req, res) => {
 
 const isLoggedIn = (req, res, next) => {
   if (req.user) next()
-  else res.status(301).redirect('/login')
+  else res.redirect('/login')
 }
 
 module.exports = {
