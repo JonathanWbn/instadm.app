@@ -1,9 +1,9 @@
 const express = require('express')
 const multer = require('multer')
 
-const { isLoggedIn } = require('../utils/session')
-const { sendPhoto } = require('../utils/instagram')
-const middlewares = require('../utils/middlewares')
+const isLoggedIn = require('../logged-in')
+const { sendPhoto } = require('../instagram')
+const middlewares = require('../middlewares')
 
 const app = express()
 

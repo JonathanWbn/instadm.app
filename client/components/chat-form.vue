@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import FormData from 'form-data'
 import { Picker } from 'emoji-mart-vue-fast'
 import 'emoji-mart-vue-fast/css/emoji-mart.css'
@@ -118,12 +119,8 @@ export default {
       this.file = null
     },
     sendMessage() {
-      fetch('/api/send-message', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ thread_id: this.threadId, message: this.message }),
-      })
-        .then(res => res.json())
+      axios
+        .post('/api/send-message', { thread_id: this.threadId, message: this.message })
         .then(() => this.$emit('refetch'))
       this.message = ''
     },

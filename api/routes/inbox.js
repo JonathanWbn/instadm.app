@@ -1,8 +1,8 @@
 const express = require('express')
 
-const { isLoggedIn } = require('../utils/session')
-const { getInbox } = require('../utils/instagram')
-const middlewares = require('../utils/middlewares')
+const isLoggedIn = require('../logged-in')
+const { getInbox } = require('../instagram')
+const middlewares = require('../middlewares')
 
 const app = express()
 

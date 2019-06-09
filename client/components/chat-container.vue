@@ -3,7 +3,7 @@
     <div id="messages" class="chat-thread">
       <infinite-loading
         v-if="thread"
-        :identifier="infiniteIdentifier"
+        :identifier="thread && thread.thread_id"
         direction="top"
         @infinite="loadMoreItems"
       >
@@ -72,9 +72,7 @@ export default {
     return {
       message: '',
       thread: null,
-      moreAvailable: false,
       cursor: null,
-      infiniteIdentifier: +new Date(),
     }
   },
   computed: {
@@ -103,13 +101,11 @@ export default {
   },
   methods: {
     getThread(id = this.threadId) {
-      axios.get(`/api/thread/${id}`).then(({ data: { thread, moreAvailable, cursor } }) => {
-        this.thread = thread
-        this.moreAvailable = moreAvailable
-        this.cursor = cursor
+      axios.get(`/api/thread/${id}`).then(({ data }) => {
+        this.thread = data.thread
+        this.cursor = data.cursor
         this.$nextTick(() => {
           this.scrollToBottom()
-          this.infiniteIdentifier = +new Date()
         })
       })
     },
@@ -120,19 +116,16 @@ export default {
       }
     },
     loadMoreItems($state) {
-      axios
-        .get(`/api/thread/${this.threadId}?cursor=${this.cursor}`)
-        .then(({ data: { thread, moreAvailable, cursor } }) => {
-          this.thread = {
-            ...thread,
-            items: [...this.thread.items, ...thread.items],
-          }
-          this.moreAvailable = moreAvailable
-          this.cursor = cursor
+      axios.get(`/api/thread/${this.threadId}?cursor=${this.cursor}`).then(({ data }) => {
+        this.thread = {
+          ...data.thread,
+          items: [...this.thread.items, ...data.thread.items],
+        }
+        this.cursor = data.cursor
 
-          if (moreAvailable) $state.loaded()
-          else $state.complete()
-        })
+        if (data.moreAvailable) $state.loaded()
+        else $state.complete()
+      })
     },
   },
 }

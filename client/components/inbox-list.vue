@@ -23,7 +23,13 @@
 <script>
 import axios from 'axios'
 import InfiniteLoading from 'vue-infinite-loading'
-import { formatThread } from '../utils'
+import moment from 'moment'
+
+const formatThread = thread => ({
+  ...thread,
+  last_activity_date: moment(+thread.last_activity_at).format('D MMM'),
+  content: (thread.last_permanent_item.item_type === 'text' && thread.last_permanent_item.text) || '',
+})
 
 export default {
   components: {
@@ -32,7 +38,6 @@ export default {
   data() {
     return {
       inbox: [],
-      moreInboxAvailable: false,
       cursor: null,
     }
   },
@@ -44,27 +49,21 @@ export default {
       this.$emit('select-thread', this.inbox[index].thread_id)
     },
     getInbox() {
-      axios
-        .get('/api/inbox')
+      return axios
+        .get(this.cursor ? `/api/inbox?cursor=${this.cursor}` : '/api/inbox')
         .then(({ data }) => {
-          this.moreInboxAvailable = data.moreAvailable
           this.cursor = data.cursor
-          this.inbox = data.inbox.map(formatThread)
+          this.inbox = [...this.inbox, ...data.inbox.map(formatThread)]
+
+          return data
         })
         .catch(() => (window.location.href = '/login'))
     },
     getMoreInbox($state) {
-      axios
-        .get(`/api/inbox?cursor=${this.cursor}`)
-        .then(({ data }) => {
-          this.moreInboxAvailable = data.moreAvailable
-          this.cursor = data.cursor
-          this.inbox = [...this.inbox, ...data.inbox.map(formatThread)]
-
-          if (data.moreAvailable) $state.loaded()
-          else $state.complete()
-        })
-        .catch(() => (window.location.href = '/login'))
+      this.getInbox().then(data => {
+        if (data.moreAvailable) $state.loaded()
+        else $state.complete()
+      })
     },
   },
 }
