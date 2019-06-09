@@ -8,6 +8,7 @@
   ],
   "routes": [
     { "src": "/api/thread/(.*)", "dest": "/api/thread" },
+    { "src": "/api/send-photo/(.*)", "dest": "/api/send-photo" },
     { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/(.*)", "dest": "/client/$1" }
   ]

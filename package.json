@@ -4,8 +4,13 @@
   "description": "Direct messaging for instagram (web app)",
   "author": "Jonathan Wieben",
   "private": true,
+  "scripts": {
+    "dev": "now dev",
+    "deploy": "now"
+  },
   "devDependencies": {
     "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.2.2"
+    "eslint-plugin-vue": "^5.2.2",
+    "now": "^15.4.0"
   }
 }
