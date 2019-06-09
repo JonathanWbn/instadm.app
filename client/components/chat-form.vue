@@ -109,7 +109,7 @@ export default {
     sendPhoto() {
       const fd = new FormData()
       fd.append('file', this.file)
-      fetch(`/send-photo/${this.threadId}`, {
+      fetch(`/api/send-photo/${this.threadId}`, {
         method: 'POST',
         body: fd,
       })
@@ -118,7 +118,7 @@ export default {
       this.file = null
     },
     sendMessage() {
-      fetch('/send-message', {
+      fetch('/api/send-message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ thread_id: this.threadId, message: this.message }),

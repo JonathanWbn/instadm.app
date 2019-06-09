@@ -33,6 +33,7 @@ export default {
     return {
       inbox: [],
       moreInboxAvailable: false,
+      cursor: null,
     }
   },
   created() {
@@ -44,21 +45,23 @@ export default {
     },
     getInbox() {
       axios
-        .get('/inbox')
+        .get('/api/inbox')
         .then(({ data }) => {
           this.moreInboxAvailable = data.moreAvailable
+          this.cursor = data.cursor
           this.inbox = data.inbox.map(formatThread)
         })
         .catch(() => (window.location.href = '/login'))
     },
     getMoreInbox($state) {
       axios
-        .get('/more-inbox')
+        .get(`/api/inbox?cursor=${this.cursor}`)
         .then(({ data }) => {
           this.moreInboxAvailable = data.moreAvailable
+          this.cursor = data.cursor
           this.inbox = [...this.inbox, ...data.inbox.map(formatThread)]
 
-          if (res.moreAvailable) $state.loaded()
+          if (data.moreAvailable) $state.loaded()
           else $state.complete()
         })
         .catch(() => (window.location.href = '/login'))

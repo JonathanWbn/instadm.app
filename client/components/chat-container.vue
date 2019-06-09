@@ -1,7 +1,12 @@
 <template>
   <div class="chat-container">
     <div id="messages" class="chat-thread">
-      <infinite-loading v-if="thread" direction="top" @infinite="loadMoreItems">
+      <infinite-loading
+        v-if="thread"
+        :identifier="infiniteIdentifier"
+        direction="top"
+        @infinite="loadMoreItems"
+      >
         <div slot="no-more" class="no-more-messages">No more messages.</div>
       </infinite-loading>
       <div
@@ -10,7 +15,7 @@
         :class="['chat-thread-item', item.isFromUser ? 'user' : 'friend']"
       >
         <img
-          v-if="!item.isFromUser"
+          v-if="item.user && !item.isFromUser"
           :src="item.user.profile_pic_url"
           class="chat-profile-thumbnail"
         >
@@ -68,6 +73,8 @@ export default {
       message: '',
       thread: null,
       moreAvailable: false,
+      cursor: null,
+      infiniteIdentifier: +new Date(),
     }
   },
   computed: {
@@ -96,11 +103,13 @@ export default {
   },
   methods: {
     getThread(id = this.threadId) {
-      axios.get(`/thread/${id}`).then(({ data: { thread, moreAvailable } }) => {
+      axios.get(`/api/thread/${id}`).then(({ data: { thread, moreAvailable, cursor } }) => {
         this.thread = thread
         this.moreAvailable = moreAvailable
+        this.cursor = cursor
         this.$nextTick(() => {
           this.scrollToBottom()
+          this.infiniteIdentifier = +new Date()
         })
       })
     },
@@ -111,16 +120,19 @@ export default {
       }
     },
     loadMoreItems($state) {
-      axios.get(`/more-items/${this.threadId}`).then(({ data: { items, moreAvailable } }) => {
-        this.thread = {
-          ...this.thread,
-          items: [...this.thread.items, ...items],
-        }
-        this.moreAvailable = moreAvailable
+      axios
+        .get(`/api/thread/${this.threadId}?cursor=${this.cursor}`)
+        .then(({ data: { thread, moreAvailable, cursor } }) => {
+          this.thread = {
+            ...thread,
+            items: [...this.thread.items, ...thread.items],
+          }
+          this.moreAvailable = moreAvailable
+          this.cursor = cursor
 
-        if (moreAvailable) $state.loaded()
-        else $state.complete()
-      })
+          if (moreAvailable) $state.loaded()
+          else $state.complete()
+        })
     },
   },
 }

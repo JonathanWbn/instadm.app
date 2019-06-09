@@ -40,12 +40,12 @@ export default {
     },
     getUser() {
       axios
-        .get('/user')
+        .get('/api/user')
         .then(({ data }) => (this.user = data))
         .catch(() => (window.location.href = '/login'))
     },
     logout() {
-      axios.post('/logout').then(() => (window.location.href = '/'))
+      axios.post('/api/logout').then(() => (window.location.href = '/login'))
     },
   },
 }

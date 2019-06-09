@@ -41,7 +41,7 @@ export default {
       if (!this.username || !this.password) return
       this.isLoading = true
       axios
-        .post('/login', { username: this.username, password: this.password })
+        .post('/api/login', { username: this.username, password: this.password })
         .then(() => {
           this.isLoading = false
           window.location.href = '/'

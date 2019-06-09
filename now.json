@@ -1,11 +1,14 @@
 {
   "version": 2,
   "name": "instadm",
+  "alias": "instadm.app",
   "builds": [
-    { "src": "package.json", "use": "@now/static-build" },
-    { "src": "server/index.js", "use": "@now/node-server" }
+    { "src": "client/package.json", "use": "@now/static-build" },
+    { "src": "api/**/*.js", "use": "@now/node" }
   ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  "routes": [
+    { "src": "/api/thread/(.*)", "dest": "/api/thread" },
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/client/$1" }
+  ]
 }
