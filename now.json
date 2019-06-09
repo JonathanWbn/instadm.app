@@ -4,12 +4,16 @@
   "alias": "instadm.app",
   "builds": [
     { "src": "client/package.json", "use": "@now/static-build" },
-    { "src": "api/**/*.js", "use": "@now/node" }
+    { "src": "api/routes/*.js", "use": "@now/node" }
   ],
   "routes": [
-    { "src": "/api/thread/(.*)", "dest": "/api/thread" },
-    { "src": "/api/send-photo/(.*)", "dest": "/api/send-photo" },
-    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/api/inbox", "dest": "/api/routes/inbox.js" },
+    { "src": "/api/login", "dest": "/api/routes/login.js" },
+    { "src": "/api/logout", "dest": "/api/routes/logout.js" },
+    { "src": "/api/send-message", "dest": "/api/routes/send-message.js" },
+    { "src": "/api/send-photo/(.*)", "dest": "/api/routes/send-photo.js" },
+    { "src": "/api/thread/(.*)", "dest": "/api/routes/thread.js" },
+    { "src": "/api/user", "dest": "/api/routes/user.js" },
     { "src": "/(.*)", "dest": "/client/$1" }
   ]
 }
