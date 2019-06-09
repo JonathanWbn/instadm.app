@@ -1,3 +1,3 @@
 # Direct messaging for instagram (web app)
 
-[instadm.app](https://instadm.app).
+[instadm.app](https://instadm.app)
