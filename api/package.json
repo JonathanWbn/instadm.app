@@ -1,7 +1,7 @@
 {
   "name": "instadm-api",
   "version": "1.0.0",
-  "description": "Serverless API for instadm.com",
+  "description": "Serverless API for instadm.app",
   "author": "Jonathan Wieben",
   "dependencies": {
     "body-parser": "^1.19.0",

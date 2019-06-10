@@ -1,7 +1,7 @@
 {
   "name": "instadm-client",
   "version": "1.0.0",
-  "description": "Vue client for instadm ssr with Nuxt.js",
+  "description": "Vue client for instadm.app",
   "author": "Jonathan Wieben",
   "scripts": {
     "now-build": "nuxt generate",
