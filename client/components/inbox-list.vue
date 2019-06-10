@@ -3,7 +3,7 @@
     <div
       v-for="(item, index) in inbox"
       :key="item.thread_id"
-      class="inbox-item"
+      :class="['inbox-item', selectedThreadId === item.thread_id && 'selected']"
       @click="selectThread(index)"
     >
       <div class="image-wrapper">
@@ -34,6 +34,9 @@ const formatThread = thread => ({
 export default {
   components: {
     InfiniteLoading,
+  },
+  props: {
+    selectedThreadId: String,
   },
   data() {
     return {
@@ -90,10 +93,15 @@ export default {
   align-items: center;
   transition: box-shadow 0.3s ease;
   cursor: pointer;
+  border: 1px solid white;
 }
 
 .inbox-item:hover {
   box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.inbox-item.selected {
+  border: 1px solid grey;
 }
 
 .image-wrapper {

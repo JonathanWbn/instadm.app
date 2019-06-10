@@ -6,7 +6,9 @@ const { login } = require('./instagram')
 passport.use(
   new LocalStrategy((username, password, done) => {
     login(username, password)
-      .then(({ user, cookies }) => done(null, { username: user.username, pk: user.pk, cookies }))
+      .then(({ user, cookies }) =>
+        done(null, { profile_pic_url: user.profile_pic_url, username: user.username, pk: user.pk, cookies })
+      )
       .catch(error => done(error))
   })
 )
