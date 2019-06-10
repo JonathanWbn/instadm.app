@@ -40,6 +40,7 @@ export default {
     async onSubmit() {
       if (!this.username || !this.password) return
       this.isLoading = true
+      this.error = null
       axios
         .post('/api/login', { username: this.username, password: this.password })
         .then(() => {
@@ -48,7 +49,7 @@ export default {
         })
         .catch(err => {
           this.isLoading = false
-          this.error = err.message
+          this.error = err.response.data || err.message
         })
     },
   },
