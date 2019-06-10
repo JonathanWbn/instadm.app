@@ -64,7 +64,7 @@ video,
 }
 
 .container {
-  border: 1px solid black;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 5px 0px;
   border-radius: 5px;
   overflow: hidden;
 }

@@ -188,8 +188,9 @@ export default {
 }
 
 .chat-thread-item.friend .chat-message {
-  background-color: lightgray;
+  background-color: white;
   color: black;
+  border: 1px solid black;
 }
 
 .chat-thread-item.user {
@@ -198,7 +199,7 @@ export default {
 }
 
 .chat-thread-item.user .chat-message {
-  background-color: blue;
+  background-color: black;
   color: white;
 }
 

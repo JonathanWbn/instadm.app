@@ -50,7 +50,7 @@ export default {
   display: flex;
   flex-direction: column;
   border-radius: 5px;
-  border: 1px solid darkgrey;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 5px 0px;
   overflow: hidden;
 }
 
@@ -58,7 +58,7 @@ export default {
   background-color: white;
   padding: 5px;
   text-align: center;
-  border-bottom: 1px solid darkgrey;
+  border-bottom: 1px solid black;
 }
 
 img,

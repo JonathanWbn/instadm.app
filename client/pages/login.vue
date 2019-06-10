@@ -26,7 +26,7 @@ import axios from 'axios'
 export default {
   head() {
     return {
-      title: 'Login - Instagram DM',
+      title: 'Login - Instagram Direct Messaging',
     }
   },
   data() {

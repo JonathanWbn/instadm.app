@@ -61,19 +61,8 @@ const getThread = async (req, res) => {
   const feed = ig.feed.directThread({ thread_id, oldest_cursor: cursor })
   const request = await feed.request()
 
-  let thread = request.thread
-
-  // fetch twice when first load
-  if (!cursor && feed.moreAvailable) {
-    const { thread: newThread } = await feed.request()
-    thread = {
-      ...newThread,
-      items: [...thread.items, ...newThread.items],
-    }
-  }
-
   res.send({
-    thread,
+    thread: request.thread,
     moreAvailable: feed.moreAvailable,
     cursor: feed.cursor,
   })
