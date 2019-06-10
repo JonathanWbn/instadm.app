@@ -101,7 +101,7 @@ export default {
 }
 
 .inbox-item.selected {
-  border: 1px solid grey;
+  border: 1px solid black;
 }
 
 .image-wrapper {

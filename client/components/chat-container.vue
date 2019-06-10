@@ -8,6 +8,7 @@
         @infinite="loadMoreItems"
       >
         <div slot="no-more" class="no-more-messages">No more messages.</div>
+        <div slot="no-results" class="no-more-messages">No more messages.</div>
       </infinite-loading>
       <div
         v-for="item in items"
@@ -97,6 +98,7 @@ export default {
   watch: {
     threadId(newId) {
       if (newId) {
+        this.thread = null
         this.getThread(newId)
       }
     },
@@ -105,7 +107,7 @@ export default {
     if (this.thread) {
       if (this.pollInterval) clearInterval(this.pollInterval)
 
-      this.pollInterval = setInterval(this.refetchItems, 3000)
+      this.pollInterval = setInterval(this.refetchItems, 30000)
     }
   },
   beforeDestroy() {
@@ -123,13 +125,16 @@ export default {
     },
     refetchItems() {
       axios.get(`/api/thread/${this.threadId}`).then(({ data }) => {
-        this.thread = {
-          ...data.thread,
-          items: _.uniqBy([...this.thread.items, ...data.thread.items], 'item_id'),
+        const hasNewMessage = data.thread.items.find(item => this.thread.items.every(el => el.item_id !== item.item_id))
+        if (hasNewMessage) {
+          this.thread = {
+            ...data.thread,
+            items: _.uniqBy([...this.thread.items, ...data.thread.items], 'item_id'),
+          }
+          this.$nextTick(() => {
+            this.scrollToBottom()
+          })
         }
-        this.$nextTick(() => {
-          this.scrollToBottom()
-        })
       })
     },
     scrollToBottom() {

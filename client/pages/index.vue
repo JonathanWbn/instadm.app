@@ -85,7 +85,7 @@ img {
 .container {
   display: flex;
   flex-direction: row;
-  height: calc(100% - 80px);
+  height: calc(100% - 100px);
 }
 
 .logout-button {
