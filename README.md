@@ -1,4 +1,4 @@
-# Direct messaging for instagram (web app)
+# Direct Messaging for Instagram (web app)
 
 This is a web app which allows one to send and receive instagram direct messages.
 You can check it out here: [instadm.app](https://instadm.app)
