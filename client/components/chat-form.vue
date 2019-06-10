@@ -42,7 +42,7 @@
         id="file"
         type="file"
         name="file"
-        accept="image/*"
+        accept="image/jpg"
         class="file-input"
         @change="onFileUpload"
       >
