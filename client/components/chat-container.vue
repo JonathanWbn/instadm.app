@@ -30,7 +30,7 @@
         <StoryShare v-else-if="item.item_type === 'story_share'" :item="item" :friend="item.user"/>
       </div>
     </div>
-    <ChatForm v-if="threadId" :thread-id="threadId" @refetch="getThread"/>
+    <ChatForm v-if="threadId" :thread-id="threadId" @refetch="refetchItems"/>
   </div>
 </template>
 
@@ -46,6 +46,7 @@ import AnimatedMedia from './chat-items/animated-media'
 import StoryShare from './chat-items/story-share'
 import ChatForm from './chat-form'
 import axios from 'axios'
+import _ from 'lodash'
 
 export default {
   components: {
@@ -73,6 +74,7 @@ export default {
       message: '',
       thread: null,
       cursor: null,
+      pollInterval: null,
     }
   },
   computed: {
@@ -99,11 +101,32 @@ export default {
       }
     },
   },
+  updated() {
+    if (this.thread) {
+      if (this.pollInterval) clearInterval(this.pollInterval)
+
+      this.pollInterval = setInterval(this.refetchItems, 3000)
+    }
+  },
+  beforeDestroy() {
+    if (this.pollInterval) clearInterval(this.pollInterval)
+  },
   methods: {
     getThread(id = this.threadId) {
       axios.get(`/api/thread/${id}`).then(({ data }) => {
         this.thread = data.thread
         this.cursor = data.cursor
+        this.$nextTick(() => {
+          this.scrollToBottom()
+        })
+      })
+    },
+    refetchItems() {
+      axios.get(`/api/thread/${this.threadId}`).then(({ data }) => {
+        this.thread = {
+          ...data.thread,
+          items: _.uniqBy([...this.thread.items, ...data.thread.items], 'item_id'),
+        }
         this.$nextTick(() => {
           this.scrollToBottom()
         })
