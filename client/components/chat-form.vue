@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent="onSubmit">
+    <form autocomplete="off" @submit.prevent="onSubmit">
       <button
         v-if="!filePreviewUrl"
         type="button"
@@ -9,20 +9,25 @@
       >
         <svg
           v-if="showEmojiPicker"
-          width="24"
-          height="24"
-          xmlns="http://www.w3.org/2000/svg"
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          width="20px"
+          height="20px"
+          viewBox="0 0 7 7"
+          aria-label="delete"
         >
-          <path
-            d="M12 11.293l10.293-10.293.707.707-10.293 10.293 10.293 10.293-.707.707-10.293-10.293-10.293 10.293-.707-.707 10.293-10.293-10.293-10.293.707-.707 10.293 10.293z"
-          ></path>
+          <g stroke="#000" stroke-width="0.8" fill="none" fill-rule="evenodd">
+            <path d="M6.093.593L.906 5.719m0-5.126l5.188 5.126"></path>
+          </g>
         </svg>
-        <svg v-else xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path
-            d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.507 13.941c-1.512 1.195-3.174 1.931-5.506 1.931-2.334 0-3.996-.736-5.508-1.931l-.493.493c1.127 1.72 3.2 3.566 6.001 3.566 2.8 0 4.872-1.846 5.999-3.566l-.493-.493zm-9.007-5.941c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5-.672-1.5-1.5-1.5zm7 0c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5-.672-1.5-1.5-1.5z"
-          ></path>
+        <svg v-else width="20px" height="20px" viewBox="0 0 14 14" aria-label="emoji">
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <path
+              d="M3.3 8.1c0-.4.4-.3.7-.4h1l.3-.1h4.3l.7.2c.2 0 .4 0 .5.3v.4c0 1.2-1 2.3-2.4 2.7h-.6l-.2.1a2 2 0 0 1-1 0h-.3c-1.6-.3-2.7-1.3-3-2.6V8m6.4-3.7c.4.1.7.3.8.8v.5c-.1.5-.6.8-1 .8-.6 0-1-.5-1.1-1 0-.5.3-1 .8-1.1h.5m-4.2.9c.1.4-.2 1-.6 1.1-.6.2-1.1 0-1.4-.5V5c0-.5.3-.7.7-.8h.5c.4 0 .7.3.8.8v.1"
+              fill="#000"
+              fill-rule="nonzero"
+              stroke-width="0"
+            ></path>
+            <circle stroke="#000" cx="7" cy="7" r="6.5"></circle>
+          </g>
         </svg>
       </button>
       <picker
@@ -36,8 +41,21 @@
         @select="addEmoji"
       />
       <img v-if="filePreviewUrl" class="file-preview" :src="filePreviewUrl">
-      <input v-else ref="text-input" v-model="message" name="message" class="text-input">
-      <div v-if="filePreviewUrl" class="file-preview-close" @click="clearFile">x</div>
+      <input
+        v-else
+        ref="text-input"
+        v-model="message"
+        autocomplete="off"
+        name="message"
+        class="text-input"
+      >
+      <div v-if="filePreviewUrl" class="file-preview-close" @click="clearFile">
+        <svg width="20px" height="20px" viewBox="0 0 7 7" aria-label="delete">
+          <g stroke="#000" stroke-width="0.8" fill="none" fill-rule="evenodd">
+            <path d="M6.093.593L.906 5.719m0-5.126l5.188 5.126"></path>
+          </g>
+        </svg>
+      </div>
       <input
         id="file"
         type="file"
@@ -47,19 +65,14 @@
         @change="onFileUpload"
       >
       <label for="file" class="file-input-label">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <svg width="20px" height="20px" viewBox="0 0 15 19" fill="none" aria-label="file">
           <path
-            d="M9 1v7.5c0 1.933-1.566 3.5-3.5 3.5s-3.5-1.567-3.5-3.5v-6c0-1.381 1.119-2.5 2.5-2.5s2.5 1.119 2.5 2.5v4.5c0 .828-.672 1.5-1.5 1.5s-1.5-.672-1.5-1.5v-4h1v4c0 .275.225.5.5.5s.5-.225.5-.5v-4.5c0-.827-.673-1.5-1.5-1.5s-1.5.673-1.5 1.5v6c0 1.378 1.121 2.5 2.5 2.5s2.5-1.122 2.5-2.5v-7.5h1zm2 0v2c3.282 0 3.772 2.946 3 6 0 0 6-1.65 6 2.457v10.543h-15v-8.025c-.715-.065-1.39-.269-2-.582v10.607h19v-13.386c0-1.843-5.583-9.614-11-9.614zm-1.499 14c.827 0 1.499-.672 1.499-1.5s-.672-1.5-1.499-1.5c-.829 0-1.501.672-1.501 1.5s.672 1.5 1.501 1.5zm7.499 4h-9l2.097-3 1.31.968 2.093-2.968 3.5 5z"
+            d="M10 8C8.34 8 7 6.66 7 5V1H3C1.9 1 1 1.9 1 3V16C1 17.1 1.9 18 3 18H12C13.1 18 14 17.1 14 16V8H10ZM8 5C8 6.1 8.9 7 10 7H13.59L8 1.41V5ZM3 0H8L15 7V16C15 17.66 13.66 19 12 19H3C1.34 19 0 17.66 0 16V3C0 1.34 1.34 0 3 0Z"
+            fill="#000"
           ></path>
         </svg>
       </label>
-      <button type="submit" class="submit-button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-          <path
-            d="M24 0l-6 22-8.129-7.239 7.802-8.234-10.458 7.227-7.215-1.754 24-12zm-15 16.668v7.332l3.258-4.431-3.258-2.901z"
-          ></path>
-        </svg>
-      </button>
+      <button type="submit" class="submit-button">Send</button>
     </form>
   </div>
 </template>
@@ -96,7 +109,7 @@ export default {
     onSubmit() {
       if (this.file) {
         this.sendPhoto()
-      } else {
+      } else if (this.message) {
         this.sendMessage()
       }
       this.showEmojiPicker = false
@@ -152,6 +165,7 @@ form {
   align-self: flex-start;
   cursor: pointer;
   flex-grow: 1;
+  margin-left: 5px;
 }
 
 .text-input {
@@ -159,7 +173,7 @@ form {
   border: none;
   font-size: 15px;
   resize: none;
-  height: 40px;
+  height: 34px;
 }
 
 .file-input-label {
@@ -181,21 +195,32 @@ form {
 }
 
 .submit-button {
-  width: 40px;
-  height: 40px;
-  background-color: lightblue;
-  border: none;
-  border-radius: 100%;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
+  -webkit-appearance: none;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 22px;
+  height: 35px;
+  font-weight: 500;
+  font-size: 12px;
+  flex-shrink: 0;
+  color: rgb(102, 102, 102);
+  background-color: transparent;
+  user-select: none;
   cursor: pointer;
+  text-decoration: none;
+  padding: 0px 10px;
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  border-image: initial;
+  transition: all 0.2s ease 0s;
+  overflow: hidden;
+  outline: none;
 }
 
-.submit-button > svg {
-  fill: white;
+.submit-button:hover {
+  color: black;
 }
 
 .emoji-toggle {
