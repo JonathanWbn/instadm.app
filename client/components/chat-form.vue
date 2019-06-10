@@ -110,12 +110,7 @@ export default {
     sendPhoto() {
       const fd = new FormData()
       fd.append('file', this.file)
-      fetch(`/api/send-photo/${this.threadId}`, {
-        method: 'POST',
-        body: fd,
-      })
-        .then(res => res.json())
-        .then(() => this.$emit('refetch'))
+      axios.post(`/api/send-photo/${this.threadId}`, fd).then(() => this.$emit('refetch'))
       this.file = null
     },
     sendMessage() {
