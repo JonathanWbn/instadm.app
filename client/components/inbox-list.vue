@@ -16,7 +16,10 @@
       </div>
       <div class="last-activity">{{ item.last_activity_date }}</div>
     </div>
-    <infinite-loading v-if="inbox.length > 0" @infinite="getMoreInbox"/>
+    <infinite-loading v-if="inbox.length > 0" @infinite="getMoreInbox">
+      <div slot="no-more" class="no-more-threads">No more threads.</div>
+      <div slot="no-results" class="no-more-threads">No more threads.</div>
+    </infinite-loading>
   </div>
 </template>
 
@@ -151,5 +154,9 @@ export default {
   margin-top: 2px;
   overflow: hidden;
   width: 295px;
+}
+
+.no-more-threads {
+  color: grey;
 }
 </style>
