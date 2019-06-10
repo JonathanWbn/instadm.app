@@ -1,5 +1,6 @@
 <template>
   <section class="container">
+    <h1>Instagram Direct Messaging</h1>
     <form @submit.prevent="onSubmit">
       <input v-model="username" type="text" name="username" class="input" placeholder="Username">
       <input
@@ -38,7 +39,16 @@ export default {
   },
   methods: {
     async onSubmit() {
-      if (!this.username || !this.password) return
+      if (!this.username && !this.password) {
+        this.error = 'Please provide your username and password.'
+        return
+      } else if (!this.username) {
+        this.error = 'Please provide your username.'
+        return
+      } else if (!this.password) {
+        this.error = 'Please provide your password.'
+        return
+      }
       this.isLoading = true
       this.error = null
       axios
@@ -61,13 +71,20 @@ export default {
   height: 100vh;
   width: 100vw;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+h1 {
+  margin-bottom: 60px;
+  font-weight: 400;
+  font-size: 32px;
+}
+
 form {
   background-color: white;
-  box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 5px 0px;
   border-radius: 5px;
   padding: 40px;
   display: flex;
@@ -76,41 +93,68 @@ form {
 
 input {
   background-color: white;
-  border: 1px solid lightgrey;
-  border-radius: 3px;
+  border: 1px solid rgb(225, 225, 225);
+  border-radius: 5px;
   margin-bottom: 20px;
-  font-size: 15px;
-  padding: 7px 10px;
+  font-size: 14px;
+  line-height: 27px;
+  padding: 4px 10px;
   width: 300px;
+  transition: border 0.3s ease;
+}
+
+input:focus {
+  border: 1px solid rgb(136, 136, 136);
+}
+
+input::placeholder {
+  color: #ccc;
 }
 
 button {
-  background-color: #6772e5;
-  border: none;
-  padding: 10px;
-  color: white;
-  font-size: 13px;
-  border-radius: 2px;
-  margin-top: 10px;
-  cursor: pointer;
+  -webkit-appearance: none;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 38px;
+  height: 40px;
   font-weight: 500;
-  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  font-size: 12px;
+  color: rgb(255, 255, 255);
+  background-color: rgb(0, 0, 0);
+  user-select: none;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0px 25px;
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(0, 0, 0);
+  transition: all 0.2s ease 0s;
+  overflow: hidden;
+  outline: none;
 }
 
 button:hover {
-  background-color: #7795f8;
-  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+  color: rgb(0, 0, 0);
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(0, 0, 0);
+  border-image: initial;
+  background: rgb(255, 255, 255);
 }
 
 button.loading {
-  background-color: grey;
+  color: rgb(204, 204, 204);
   cursor: default;
+  pointer-events: none;
+  background: rgb(250, 250, 250);
+  border-color: rgb(234, 234, 234);
 }
 
 .error {
-  color: #d64040;
+  color: red;
   text-align: center;
   width: 300px;
+  margin-bottom: 20px;
 }
 </style>
