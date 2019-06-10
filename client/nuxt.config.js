@@ -1,5 +1,3 @@
-const pkg = require('./package')
-
 module.exports = {
   mode: 'spa',
 
@@ -11,7 +9,9 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description },
+      { name: 'description', content: 'Instagram direct messaging in the browser' },
+      { name: 'keywords', content: 'instagram direct messaging browser web app' },
+      { name: 'author', content: 'Jonathan Wieben' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
