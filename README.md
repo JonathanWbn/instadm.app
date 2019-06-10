@@ -9,7 +9,7 @@ I like to draft and send messages in my browser. I have always been a big fan of
 
 ### Stack
 
-This is a monorepo which I deploy whith zeit's amazing [now product](https://zeit.co/now).
+This is a monorepo which I deploy whith zeit's amazing [Now product](https://zeit.co/now).
 
 The backend is a serverless Node API written with [express](https://github.com/expressjs/express). I'm using [passport](http://www.passportjs.org/) for authentication and [instagram-api-client](https://github.com/dilame/instagram-private-api) to access instagram's API.
 
