@@ -11,6 +11,9 @@
         placeholder="Password"
       >
       <div v-if="error" class="error">{{ error }}</div>
+      <div
+        class="error"
+      >Please be aware that this app is still in its beta phase. The login might not work for you and you might get a notification from Instagram warning you about an unusual login attempt.</div>
       <button
         type="submit"
         :class="{ loading: isLoading }"
