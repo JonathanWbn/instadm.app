@@ -19,4 +19,4 @@ The backend is a serverless Node API written with [express](https://github.com/e
 The frontend is a [Vue.js](https://github.com/vuejs/vue) app, which is server-side-rendered with [Nuxt.js](https://nuxtjs.org/).
 
 ### Future
-As this app can only be used by myself, I will maintain and add features whenever I feel like it. Realistically I will use this project mostly to play around with `Vue.js`.
+As this app can only be used by myself, I will maintain and add features whenever I feel like it ([see trello board](https://trello.com/b/VfwJqnI1/instadmapp)). Realistically I will use this project mostly to play around with `Vue.js`.
