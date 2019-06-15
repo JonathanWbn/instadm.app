@@ -2,7 +2,14 @@
   <section class="container">
     <h1>Instagram Direct Messaging</h1>
     <form @submit.prevent="onSubmit">
-      <input v-model="username" type="text" name="username" class="input" placeholder="Username">
+      <input
+        v-model="username"
+        type="text"
+        name="username"
+        class="input"
+        placeholder="Username"
+        disabled
+      >
       <input
         v-model="password"
         type="password"
@@ -11,9 +18,10 @@
         placeholder="Password"
       >
       <div v-if="error" class="error">{{ error }}</div>
-      <div
-        class="error"
-      >Please be aware that this app is still in its beta phase. The login might not work for you and you might get a notification from Instagram warning you about an unusual login attempt.</div>
+      <div class="warning">
+        This app is only built for personal use and only allows to login
+        <b>jonathan_wbn</b>.
+      </div>
       <button
         type="submit"
         :class="{ loading: isLoading }"
@@ -34,7 +42,8 @@ export default {
   },
   data() {
     return {
-      username: null,
+      // I'm hardcoding the username to limit the app to my personal use.
+      username: 'jonathan_wbn',
       password: null,
       isLoading: false,
       error: null,
@@ -42,13 +51,7 @@ export default {
   },
   methods: {
     async onSubmit() {
-      if (!this.username && !this.password) {
-        this.error = 'Please provide your username and password.'
-        return
-      } else if (!this.username) {
-        this.error = 'Please provide your username.'
-        return
-      } else if (!this.password) {
+      if (!this.password) {
         this.error = 'Please provide your password.'
         return
       }
@@ -95,7 +98,6 @@ form {
 }
 
 input {
-  background-color: white;
   border: 1px solid rgb(225, 225, 225);
   border-radius: 5px;
   margin-bottom: 20px;
@@ -112,6 +114,12 @@ input:focus {
 
 input::placeholder {
   color: #ccc;
+}
+
+input:disabled {
+  cursor: not-allowed;
+  background-color: rgba(183, 183, 183, 0.15);
+  color: rgb(153, 153, 153);
 }
 
 button {
@@ -156,6 +164,13 @@ button.loading {
 
 .error {
   color: red;
+  text-align: center;
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+.warning {
+  color: #f5a623;
   text-align: center;
   width: 300px;
   margin-bottom: 20px;
