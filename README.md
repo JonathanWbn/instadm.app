@@ -16,7 +16,7 @@ This is a monorepo which I deploy whith zeit's amazing [Now product](https://zei
 
 The backend is a serverless Node API written with [express](https://github.com/expressjs/express). I'm using [passport](http://www.passportjs.org/) for authentication and [instagram-api-client](https://github.com/dilame/instagram-private-api) to access instagram's API.
 
-The frontend is a [Vue.js](https://github.com/vuejs/vue) app, which I server-side-render with [Nuxt.js](https://nuxtjs.org/).
+The frontend is a [Vue.js](https://github.com/vuejs/vue) app, which is server-side-rendered with [Nuxt.js](https://nuxtjs.org/).
 
 ### Future
 As this app can only be used by myself, I will maintain and add features whenever I feel like it. Realistically I will use this project mostly to play around with `Vue.js`.
