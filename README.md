@@ -3,9 +3,12 @@
 This is a web app which allows one to send and receive instagram direct messages.
 You can check it out here: [instadm.app](https://instadm.app)
 
+### Disclaimer
+Instagram does not provide a public API to send and receive direct messages. I'm using [instagram-api-client](https://github.com/dilame/instagram-private-api) to get around this limitation. Following the [EULA of instagram-api-client](https://github.com/dilame/instagram-private-api#end-user-license-agreement-eula), **I don't intend to make this app accesible for everyone to use. I'm limiting the app to only allow logging in with my personal account.**
+
 ### Motivation
 
-I like to draft and send messages in my browser. I have always been a big fan of [whatsapp's web client](https://web.whatsapp.com/). I couldn't find anything similar for Instagram, so I decided to build it myself.
+I like to draft and send messages in my browser. I have always been a big fan of [whatsapp's web client](https://web.whatsapp.com/). I couldn't find anything similar for Instagram, so I decided to build it myself. I also wanted to play around with some new technologies (Vue.js and Nuxt.js) and concepts (serverless).
 
 ### Stack
 
@@ -16,5 +19,4 @@ The backend is a serverless Node API written with [express](https://github.com/e
 The frontend is a [Vue.js](https://github.com/vuejs/vue) app, which I server-side-render with [Nuxt.js](https://nuxtjs.org/).
 
 ### Future
-
-I'm planning to actively maintain this project and make some gradual improvements. You can check the progress and vision [on my trello board](https://trello.com/b/VfwJqnI1/instagram-dm-web-app). I'm also open for ideas, issues and pull requests.
+As this app can only be used by myself, I will maintain and add features whenever I feel like it. Realistically I will use this project mostly to play around with `Vue.js`.
