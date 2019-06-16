@@ -11,6 +11,7 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.2",
-    "now": "^15.4.0"
+    "now": "^15.4.0",
+    "prettier": "^1.18.2"
   }
 }
