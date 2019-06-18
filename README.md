@@ -4,6 +4,7 @@ This is a web app which allows one to send and receive instagram direct messages
 You can check it out here: [instadm.app](https://instadm.app)
 
 ### Disclaimer
+
 Instagram does not provide a public API to send and receive direct messages. I'm using [instagram-api-client](https://github.com/dilame/instagram-private-api) to get around this limitation. Following the [EULA of instagram-api-client](https://github.com/dilame/instagram-private-api#end-user-license-agreement-eula), **I don't intend to make this app accesible for everyone to use. I'm limiting the app to only allow logging in with my personal account.**
 
 ### Motivation
@@ -19,4 +20,18 @@ The backend is a serverless Node API written with [express](https://github.com/e
 The frontend is a [Vue.js](https://github.com/vuejs/vue) app, which is server-side-rendered with [Nuxt.js](https://nuxtjs.org/).
 
 ### Future
+
 As this app can only be used by myself, I will maintain and add features whenever I feel like it ([see trello board](https://trello.com/b/VfwJqnI1/instadmapp)). Realistically I will use this project mostly to play around with `Vue.js`.
+
+### Contribute
+
+```bash
+# install packages
+yarn
+
+# develop
+yarn dev
+
+# deploy
+yarn deploy
+```
