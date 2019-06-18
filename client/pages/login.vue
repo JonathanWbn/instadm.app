@@ -23,11 +23,7 @@
           This app is only built for personal use and only allows to login
           <b>jonathan_wbn</b>.
         </div>
-        <button
-          type="submit"
-          :class="{ loading: isLoading }"
-          :disabled="isLoading"
-        >{{ isLoading ? '...' : 'LOGIN' }}</button>
+        <Button type="submit" :is-loading="isLoading" :label="isLoading ? '...' : 'LOGIN'"/>
       </form>
     </section>
     <footer>
@@ -54,8 +50,12 @@
 
 <script>
 import axios from 'axios'
+import Button from '../components/button'
 
 export default {
+  components: {
+    Button,
+  },
   head() {
     return {
       title: 'Login - Instagram Direct Messaging',
@@ -142,46 +142,6 @@ input:disabled {
   cursor: not-allowed;
   background-color: rgba(183, 183, 183, 0.15);
   color: rgb(153, 153, 153);
-}
-
-button {
-  -webkit-appearance: none;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 38px;
-  height: 40px;
-  font-weight: 500;
-  font-size: 12px;
-  color: rgb(255, 255, 255);
-  background-color: rgb(0, 0, 0);
-  user-select: none;
-  cursor: pointer;
-  text-decoration: none;
-  padding: 0px 25px;
-  border-radius: 5px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: rgb(0, 0, 0);
-  transition: all 0.2s ease 0s;
-  overflow: hidden;
-  outline: none;
-}
-
-button:hover {
-  color: rgb(0, 0, 0);
-  border-width: 1px;
-  border-style: solid;
-  border-color: rgb(0, 0, 0);
-  border-image: initial;
-  background: rgb(255, 255, 255);
-}
-
-button.loading {
-  color: rgb(204, 204, 204);
-  cursor: default;
-  pointer-events: none;
-  background: rgb(250, 250, 250);
-  border-color: rgb(234, 234, 234);
 }
 
 .error {

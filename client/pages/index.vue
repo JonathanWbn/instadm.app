@@ -7,7 +7,7 @@
         ></path>
       </svg>
       <div class="menu">
-        <button class="logout-button" @click="logout">logout</button>
+        <Button label="Logout" design="text" @click="logout"/>
         <img v-if="user" :src="user.profile_pic_url">
       </div>
     </nav>
@@ -20,13 +20,15 @@
 
 <script>
 import axios from 'axios'
-import InboxList from '~/components/inbox-list'
-import ChatContainer from '~/components/chat-container'
+import InboxList from '../components/inbox-list'
+import ChatContainer from '../components/chat-container'
+import Button from '../components/button'
 
 export default {
   components: {
     InboxList,
     ChatContainer,
+    Button,
   },
   data() {
     return {
@@ -86,35 +88,5 @@ img {
   display: flex;
   flex-direction: row;
   height: calc(100% - 100px);
-}
-
-.logout-button {
-  -webkit-appearance: none;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 22px;
-  height: 24px;
-  font-weight: 500;
-  font-size: 12px;
-  flex-shrink: 0;
-  color: rgb(102, 102, 102);
-  background-color: transparent;
-  user-select: none;
-  cursor: pointer;
-  text-decoration: none;
-  padding: 0px 10px;
-  border-radius: 5px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: transparent;
-  border-image: initial;
-  transition: all 0.2s ease 0s;
-  overflow: hidden;
-  outline: none;
-  margin-right: 10px;
-}
-
-.logout-button:hover {
-  color: black;
 }
 </style>

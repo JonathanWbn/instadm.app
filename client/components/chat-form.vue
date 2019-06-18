@@ -72,7 +72,7 @@
           ></path>
         </svg>
       </label>
-      <button type="submit" class="submit-button">Send</button>
+      <Button type="submit" label="Send" design="text"/>
     </form>
   </div>
 </template>
@@ -82,10 +82,12 @@ import axios from 'axios'
 import FormData from 'form-data'
 import { Picker } from 'emoji-mart-vue-fast'
 import 'emoji-mart-vue-fast/css/emoji-mart.css'
+import Button from './button'
 
 export default {
   components: {
     Picker,
+    Button,
   },
   props: {
     threadId: {
@@ -192,35 +194,6 @@ form {
 
 .file-input-label:hover > svg {
   fill: black;
-}
-
-.submit-button {
-  -webkit-appearance: none;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 22px;
-  height: 35px;
-  font-weight: 500;
-  font-size: 12px;
-  flex-shrink: 0;
-  color: rgb(102, 102, 102);
-  background-color: transparent;
-  user-select: none;
-  cursor: pointer;
-  text-decoration: none;
-  padding: 0px 10px;
-  border-radius: 5px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: transparent;
-  border-image: initial;
-  transition: all 0.2s ease 0s;
-  overflow: hidden;
-  outline: none;
-}
-
-.submit-button:hover {
-  color: black;
 }
 
 .emoji-toggle {
