@@ -19,12 +19,12 @@
           placeholder="Password"
         >
         <div v-if="error" class="error">{{ error }}</div>
-        <div class="warning">
-          This app is only built for personal use and only allows to login
-          <b>jonathan_wbn</b>.
-        </div>
         <Button type="submit" :is-loading="isLoading" :label="isLoading ? '...' : 'LOGIN'"/>
       </form>
+      <div class="alert">
+        <span>Alert:</span> This app is only built for personal use and only allows to login
+        <b>jonathan_wbn</b>.
+      </div>
     </section>
     <footer>
       <a href="https://github.com/JonathanWbn/instadm.app" target="_blank" aria-label="GitHub">
@@ -95,8 +95,7 @@ export default {
 
 <style scoped>
 .container {
-  height: calc(100vh - 120px);
-  padding-top: 120px;
+  height: calc(100vh - 100px);
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -107,16 +106,19 @@ export default {
 h1 {
   margin-bottom: 60px;
   font-weight: 400;
-  font-size: 32px;
+  font-size: 36px;
+  text-align: center;
 }
 
 form {
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 5px 0px;
   border-radius: 5px;
-  padding: 40px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
+  max-width: 90vw;
+  width: 360px;
 }
 
 input {
@@ -126,7 +128,6 @@ input {
   font-size: 14px;
   line-height: 27px;
   padding: 4px 10px;
-  width: 300px;
   transition: border 0.3s ease;
 }
 
@@ -145,17 +146,27 @@ input:disabled {
 }
 
 .error {
-  color: red;
+  color: #ff001f;
   text-align: center;
-  width: 300px;
   margin-bottom: 20px;
 }
 
-.warning {
+.alert {
+  border: 1px solid #f48121;
+  padding: 16px 24px;
+  border-radius: 4px;
+  background: var(--geist-background);
+  font-size: 14px;
+  line-height: 1.8;
+  max-width: 90vw;
+  width: 360px;
+  margin-top: 20px;
+}
+
+.alert span {
   color: #f5a623;
-  text-align: center;
-  width: 300px;
-  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
 footer {
@@ -163,7 +174,7 @@ footer {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 120px;
+  height: 100px;
 }
 
 footer a {
@@ -173,8 +184,8 @@ footer a {
 }
 
 footer a:not(:last-child) {
-  padding-right: 20px;
-  margin-right: 20px;
+  padding-right: 15px;
+  margin-right: 15px;
   border-right: 1px solid #d6d6d6;
 }
 
@@ -184,5 +195,28 @@ footer a:hover {
 
 footer a svg {
   fill: currentColor;
+}
+
+@media (max-width: 700px) {
+  .container {
+    height: calc(100vh - 60px);
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  form {
+    padding: 20px;
+  }
+
+  .alert {
+    padding: 10px 12px;
+  }
+
+  footer {
+    height: 60px;
+  }
 }
 </style>
