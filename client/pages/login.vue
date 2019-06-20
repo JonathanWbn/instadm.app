@@ -28,9 +28,7 @@
           ></path>
         </svg>
       </a>
-      <a href="mailto:joni.wieben@icloud.com">
-        <span>joni.wieben@icloud.com</span>
-      </a>
+      <a href="/impressum">Impressum</a>
     </footer>
   </div>
 </template>
