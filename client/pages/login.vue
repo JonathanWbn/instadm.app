@@ -114,6 +114,7 @@ input {
   line-height: 27px;
   padding: 4px 10px;
   transition: border 0.3s ease;
+  -webkit-appearance: none;
 }
 
 input:focus {
