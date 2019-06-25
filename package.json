@@ -8,6 +8,9 @@
     "dev": "now dev",
     "deploy": "now"
   },
+  "engines": {
+    "node": "10.x"
+  },
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.2",
