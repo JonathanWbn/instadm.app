@@ -1,7 +1,7 @@
 <template>
   <div class="audio">
     <audio controls>
-      <source :src="item.audio_versions[0].url">
+      <source :src="item.audio_versions[0].url" />
     </audio>
   </div>
 </template>

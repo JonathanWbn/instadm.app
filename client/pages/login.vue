@@ -3,14 +3,13 @@
     <section class="container">
       <h1>Instagram Direct Messaging</h1>
       <form @submit.prevent="onSubmit">
-        <input v-model="username" type="text" name="username" placeholder="Username" disabled>
-        <input v-model="password" type="password" name="password" placeholder="Password">
+        <input v-model="username" type="text" name="username" placeholder="Username" disabled />
+        <input v-model="password" type="password" name="password" placeholder="Password" />
         <div v-if="error" class="error">{{ error }}</div>
-        <Button type="submit" :is-loading="isLoading" :label="isLoading ? '...' : 'LOGIN'"/>
+        <Button type="submit" :is-loading="isLoading" :label="isLoading ? '...' : 'LOGIN'" />
       </form>
       <div class="alert">
-        <span>Attention:</span> This app is only built for personal use and only allows to login
-        <b>jonathan_wbn</b>.
+        <span>Attention:</span> This app is only built for personal use and only allows to login <b>jonathan_wbn</b>.
       </div>
     </section>
     <footer>

@@ -7,13 +7,13 @@
         ></path>
       </svg>
       <div class="menu">
-        <Button label="Logout" design="text" @click="logout"/>
-        <img v-if="user" :src="user.profile_pic_url">
+        <Button label="Logout" design="text" @click="logout" />
+        <img v-if="user" :src="user.profile_pic_url" />
       </div>
     </nav>
     <div class="container">
-      <InboxList :selected-thread-id="selectedThreadId" @select-thread="selectThread"/>
-      <ChatContainer :thread-id="selectedThreadId" :user="user"/>
+      <InboxList :selected-thread-id="selectedThreadId" @select-thread="selectThread" />
+      <ChatContainer :thread-id="selectedThreadId" :user="user" />
     </div>
   </div>
 </template>

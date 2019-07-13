@@ -7,7 +7,7 @@
       @click="selectThread(index)"
     >
       <div class="image-wrapper">
-        <img :src="item.users[0].profile_pic_url">
+        <img :src="item.users[0].profile_pic_url" />
         <div v-if="item.users.length > 1" class="more-users">+{{ item.users.length - 1 }}</div>
       </div>
       <div class="text">

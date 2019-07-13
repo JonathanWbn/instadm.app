@@ -1,5 +1,5 @@
 <template>
-  <div :class="['wrapper', item.isFromUser ? 'user': 'friend']">
+  <div :class="['wrapper', item.isFromUser ? 'user' : 'friend']">
     <div v-if="item.isFromUser" class="message-preface">{{ userString }}</div>
     <div v-else class="message-preface">{{ friendString }}</div>
     <div v-if="item.reel_share.text" class="chat-message">{{ item.reel_share.text }}</div>

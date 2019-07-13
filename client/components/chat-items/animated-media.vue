@@ -1,7 +1,7 @@
 <template>
-  <div class="wrapper" :style="{ height: `${media.height / media.width * 200}px` }">
+  <div class="wrapper" :style="{ height: `${(media.height / media.width) * 200}px` }">
     <a :href="media.url" target="_blank">
-      <img :src="media.url">
+      <img :src="media.url" />
     </a>
   </div>
 </template>
@@ -15,7 +15,7 @@ export default {
     },
   },
   computed: {
-    media() {
+    media(someVar) {
       return this.item.animated_media.images.fixed_height
     },
   },

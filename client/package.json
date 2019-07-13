@@ -1,6 +1,6 @@
 {
   "name": "instadm-client",
-  "version": "1.0.0",
+  "license": "MIT",
   "description": "Vue client for instadm.app",
   "author": "Jonathan Wieben",
   "scripts": {
@@ -11,8 +11,8 @@
     "@nuxtjs/google-analytics": "^2.2.0",
     "axios": "^0.19.0",
     "emoji-mart-vue-fast": "^5.4.14",
-    "form-data": "^2.3.3",
-    "lodash": "^4.17.11",
+    "form-data": "^2.5.0",
+    "lodash": "^4.17.14",
     "moment": "^2.24.0",
     "nuxt": "^2.8.1",
     "vue-infinite-loading": "^2.4.4"

@@ -10,28 +10,20 @@
         <div slot="no-more" class="no-more-messages">No more messages.</div>
         <div slot="no-results" class="no-more-messages">No more messages.</div>
       </infinite-loading>
-      <div
-        v-for="item in items"
-        :key="item.item_id"
-        :class="['chat-thread-item', item.isFromUser ? 'user' : 'friend']"
-      >
-        <img
-          v-if="item.user && !item.isFromUser"
-          :src="item.user.profile_pic_url"
-          class="chat-profile-thumbnail"
-        >
-        <Message v-if="item.item_type === 'text'" :item="item"/>
-        <ReelShare v-else-if="item.item_type === 'reel_share'" :item="item" :friend="item.user"/>
-        <MediaShare v-else-if="item.item_type === 'media_share'" :item="item"/>
-        <Audio v-else-if="item.item_type === 'audio'" :item="item"/>
-        <VoiceMedia v-else-if="item.item_type === 'voice_media'" :item="item"/>
-        <Media v-else-if="item.item_type === 'media'" :item="item"/>
-        <AnimatedMedia v-else-if="item.item_type === 'animated_media'" :item="item"/>
-        <Like v-else-if="item.item_type === 'like'"/>
-        <StoryShare v-else-if="item.item_type === 'story_share'" :item="item" :friend="item.user"/>
+      <div v-for="item in items" :key="item.item_id" :class="['chat-thread-item', item.isFromUser ? 'user' : 'friend']">
+        <img v-if="item.user && !item.isFromUser" :src="item.user.profile_pic_url" class="chat-profile-thumbnail" />
+        <Message v-if="item.item_type === 'text'" :item="item" />
+        <ReelShare v-else-if="item.item_type === 'reel_share'" :item="item" :friend="item.user" />
+        <MediaShare v-else-if="item.item_type === 'media_share'" :item="item" />
+        <Audio v-else-if="item.item_type === 'audio'" :item="item" />
+        <VoiceMedia v-else-if="item.item_type === 'voice_media'" :item="item" />
+        <Media v-else-if="item.item_type === 'media'" :item="item" />
+        <AnimatedMedia v-else-if="item.item_type === 'animated_media'" :item="item" />
+        <Like v-else-if="item.item_type === 'like'" />
+        <StoryShare v-else-if="item.item_type === 'story_share'" :item="item" :friend="item.user" />
       </div>
     </div>
-    <ChatForm v-if="threadId" :thread-id="threadId" @refetch="refetchItems"/>
+    <ChatForm v-if="threadId" :thread-id="threadId" @refetch="refetchItems" />
   </div>
 </template>
 

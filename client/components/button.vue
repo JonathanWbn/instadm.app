@@ -1,10 +1,7 @@
 <template>
-  <button
-    :type="type"
-    :class="{ loading: isLoading, [design]: true }"
-    :disabled="isLoading"
-    @click="handleClick"
-  >{{ label }}</button>
+  <button :type="type" :class="{ loading: isLoading, [design]: true }" :disabled="isLoading" @click="handleClick">
+    {{ label }}
+  </button>
 </template>
 
 <script>

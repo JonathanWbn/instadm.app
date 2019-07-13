@@ -1,19 +1,8 @@
 <template>
   <div>
     <form autocomplete="off" @submit.prevent="onSubmit">
-      <button
-        v-if="!filePreviewUrl"
-        type="button"
-        class="emoji-toggle"
-        @click.prevent="toggleEmojiPicker"
-      >
-        <svg
-          v-if="showEmojiPicker"
-          width="20px"
-          height="20px"
-          viewBox="0 0 7 7"
-          aria-label="delete"
-        >
+      <button v-if="!filePreviewUrl" type="button" class="emoji-toggle" @click.prevent="toggleEmojiPicker">
+        <svg v-if="showEmojiPicker" width="20px" height="20px" viewBox="0 0 7 7" aria-label="delete">
           <g stroke="#000" stroke-width="0.8" fill="none" fill-rule="evenodd">
             <path d="M6.093.593L.906 5.719m0-5.126l5.188 5.126"></path>
           </g>
@@ -40,15 +29,8 @@
         :emoji-tooltip="true"
         @select="addEmoji"
       />
-      <img v-if="filePreviewUrl" class="file-preview" :src="filePreviewUrl">
-      <input
-        v-else
-        ref="text-input"
-        v-model="message"
-        autocomplete="off"
-        name="message"
-        class="text-input"
-      >
+      <img v-if="filePreviewUrl" class="file-preview" :src="filePreviewUrl" />
+      <input v-else ref="text-input" v-model="message" autocomplete="off" name="message" class="text-input" />
       <div v-if="filePreviewUrl" class="file-preview-close" @click="clearFile">
         <svg width="20px" height="20px" viewBox="0 0 7 7" aria-label="delete">
           <g stroke="#000" stroke-width="0.8" fill="none" fill-rule="evenodd">
@@ -56,14 +38,7 @@
           </g>
         </svg>
       </div>
-      <input
-        id="file"
-        type="file"
-        name="file"
-        accept="image/jpg"
-        class="file-input"
-        @change="onFileUpload"
-      >
+      <input id="file" type="file" name="file" accept="image/jpg" class="file-input" @change="onFileUpload" />
       <label for="file" class="file-input-label">
         <svg width="20px" height="20px" viewBox="0 0 15 19" fill="none" aria-label="file">
           <path
@@ -72,7 +47,7 @@
           ></path>
         </svg>
       </label>
-      <Button type="submit" label="Send" design="text"/>
+      <Button type="submit" label="Send" design="text" />
     </form>
   </div>
 </template>

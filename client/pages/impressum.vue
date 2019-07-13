@@ -3,14 +3,13 @@
     <h1>Impressum</h1>
     <p>
       Jonathan Wieben
-      <br>Alfredstr. 61
-      <br>20535 Hamburg
+      <br />Alfredstr. 61 <br />20535 Hamburg
     </p>
     <p>
       Telefon: +49 17655501946
-      <br>E-Mail:
+      <br />E-Mail:
       <a href="mailto:joni.wieben@icloud.com">joni.wieben@icloud.com</a>
-      <br>
+      <br />
     </p>
   </main>
 </template>

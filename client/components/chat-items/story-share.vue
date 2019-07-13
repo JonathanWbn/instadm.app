@@ -1,25 +1,25 @@
 <template>
-  <div :class="['wrapper', item.isFromUser ? 'user': 'friend']">
-    <div
-      class="message-preface"
-    >{{ item.story_share.title || `Sent @${item.story_share.media.user.username}'s story` }}</div>
+  <div :class="['wrapper', item.isFromUser ? 'user' : 'friend']">
+    <div class="message-preface">
+      {{ item.story_share.title || `Sent @${item.story_share.media.user.username}'s story` }}
+    </div>
     <div v-if="isExpired" class="expired">No longer available.</div>
     <div
       v-else-if="item.story_share.media.media_type === 1"
       class="container"
-      :style="{ height: `${media.height / media.width * 200}px` }"
+      :style="{ height: `${(media.height / media.width) * 200}px` }"
     >
       <a :href="media.url" target="_blank">
-        <img :src="media.url">
+        <img :src="media.url" />
       </a>
     </div>
     <div
       v-else-if="item.story_share.media.media_type === 2"
       class="container"
-      :style="{ height: `${media.height / media.width * 200}px` }"
+      :style="{ height: `${(media.height / media.width) * 200}px` }"
     >
       <video controls>
-        <source :src="media.url" type="video/mp4">
+        <source :src="media.url" type="video/mp4" />
       </video>
     </div>
   </div>

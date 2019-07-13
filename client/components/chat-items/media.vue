@@ -3,19 +3,19 @@
     <div
       v-if="item.media.media_type === 1"
       class="wrapper"
-      :style="{ height: `${media.height / media.width * 200}px` }"
+      :style="{ height: `${(media.height / media.width) * 200}px` }"
     >
       <a :href="media.url" target="_blank">
-        <img :src="media.url">
+        <img :src="media.url" />
       </a>
     </div>
     <div
       v-else-if="item.media.media_type === 2"
       class="wrapper"
-      :style="{ height: `${media.height / media.width * 200}px` }"
+      :style="{ height: `${(media.height / media.width) * 200}px` }"
     >
       <video controls>
-        <source :src="media.url" type="video/mp4">
+        <source :src="media.url" type="video/mp4" />
       </video>
     </div>
   </div>
