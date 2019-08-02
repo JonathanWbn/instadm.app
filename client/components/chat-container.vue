@@ -203,6 +203,7 @@ export default {
 }
 
 .chat-message {
+  white-space: pre;
   padding: 5px 15px;
   border-radius: 20px;
   line-height: 26px;

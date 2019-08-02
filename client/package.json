@@ -16,5 +16,8 @@
     "moment": "^2.24.0",
     "nuxt": "^2.8.1",
     "vue-infinite-loading": "^2.4.4"
+  },
+  "devDependencies": {
+    "prettier": "^1.18.2"
   }
 }

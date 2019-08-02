@@ -105,7 +105,10 @@ export default {
     },
     sendMessage() {
       axios
-        .post('/api/send-message', { thread_id: this.threadId, message: this.message })
+        .post('/api/send-message', {
+          thread_id: this.threadId,
+          message: this.message,
+        })
         .then(() => this.$emit('refetch'))
       this.message = ''
     },
