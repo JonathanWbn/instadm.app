@@ -21,17 +21,10 @@ The frontend is a [Vue.js](https://github.com/vuejs/vue) app, which is server-si
 
 ### Future
 
-As this app can only be used by myself, I will maintain and add features whenever I feel like it ([see trello board](https://trello.com/b/VfwJqnI1/instadmapp)). Realistically I will use this project mostly to play around with `Vue.js`.
+As this app can only be used by myself, I will maintain and add features whenever I feel like it ([see trello board](https://trello.com/b/VfwJqnI1/instadmapp)). Realistically I will use this project mostly to play around with [Vue.js](https://github.com/vuejs/vue) and [Nuxt.js](https://nuxtjs.org/).
 
 ### Contribute
 
-```bash
-# install packages
-yarn
+In order to develop this app you're going to need the [Now CLI](https://github.com/zeit/now-cli).
 
-# develop
-yarn dev
-
-# deploy
-yarn deploy
-```
+Then, you can just run `now dev` and play around on `http://localhost:3000/`
