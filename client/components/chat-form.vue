@@ -30,7 +30,15 @@
         @select="addEmoji"
       />
       <img v-if="filePreviewUrl" class="file-preview" :src="filePreviewUrl" />
-      <input v-else ref="text-input" v-model="message" autocomplete="off" name="message" class="text-input" />
+      <textarea
+        v-else
+        ref="text-input"
+        v-model="message"
+        autocomplete="off"
+        name="message"
+        class="text-input"
+        placeholder="Type here..."
+      />
       <div v-if="filePreviewUrl" class="file-preview-close" @click="clearFile">
         <svg width="20px" height="20px" viewBox="0 0 7 7" aria-label="delete">
           <g stroke="#000" stroke-width="0.8" fill="none" fill-rule="evenodd">
@@ -153,7 +161,11 @@ form {
   border: none;
   font-size: 15px;
   resize: none;
-  height: 34px;
+  height: 29px;
+}
+
+.text-input:focus {
+  height: 80px;
 }
 
 .file-input-label {
