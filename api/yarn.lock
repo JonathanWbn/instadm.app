@@ -472,10 +472,10 @@ inherits@2.0.3, inherits@^2.0.3, inherits@~2.0.1, inherits@~2.0.3:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
   integrity sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
 
-instagram-private-api@^1.19.0:
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/instagram-private-api/-/instagram-private-api-1.19.0.tgz#b6232a49c275f1ea86d60a925f7036a97a508d2e"
-  integrity sha512-tNtMW3pIgVIHCQvwJqJmn+oDVCuITo23jOHbnVUTA35we1sGQ9Rsvol3cRbGyjJpEqlOma/4hItYd3rTY7wHyQ==
+instagram-private-api@^1.29.0:
+  version "1.29.0"
+  resolved "https://registry.yarnpkg.com/instagram-private-api/-/instagram-private-api-1.29.0.tgz#dd8c59a87727184b8ff1d7fd18ac1cba8d15ff74"
+  integrity sha512-WINaHlG7CN3srYAEkr5gpc24I9yLKMvNw/ieHDU9MDNETifEd+Gd7szFoL16IfU5LPlLPyQQBGKjqKIcpSaaIA==
   dependencies:
     "@lifeomic/attempt" "^3.0.0"
     "@types/chance" "^1.0.2"
@@ -490,7 +490,7 @@ instagram-private-api@^1.19.0:
     reflect-metadata "^0.1.13"
     request "^2.88.0"
     request-promise "^4.2.4"
-    rxjs "^6.4.0"
+    rxjs "^6.5.2"
     tough-cookie "^2.5.0"
     ts-custom-error "^2.2.2"
     ts-xor "^1.0.6"
@@ -632,10 +632,10 @@ ms@2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
   integrity sha512-tgp+dl5cGk28utYktBsrFqA7HKgrhgPsg6Z/EfhWI4gl1Hwq8B/GmY/0oXZ6nF8hDVesS/FpnYaD/kOWhYQvyg==
 
-multer@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/multer/-/multer-1.4.1.tgz#24b12a416a22fec2ade810539184bf138720159e"
-  integrity sha512-zzOLNRxzszwd+61JFuAo0fxdQfvku12aNJgnla0AQ+hHxFmfc/B7jBVuPr5Rmvu46Jze/iJrFpSOsD7afO8SDw==
+multer@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/multer/-/multer-1.4.2.tgz#2f1f4d12dbaeeba74cb37e623f234bf4d3d2057a"
+  integrity sha512-xY8pX7V+ybyUpbYMxtjM9KAiD9ixtg5/JkeKUTD6xilfDv0vzzOFcCp4Ljb1UU3tSOM3VTZtKo63OmzOrGi3Cg==
   dependencies:
     append-field "^1.0.0"
     busboy "^0.2.11"
@@ -837,10 +837,10 @@ request@^2.88.0:
     tunnel-agent "^0.6.0"
     uuid "^3.3.2"
 
-rxjs@^6.4.0:
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.2.tgz#2e35ce815cd46d84d02a209fb4e5921e051dbec7"
-  integrity sha512-HUb7j3kvb7p7eCUHE3FqjoDsC1xfZQ4AHFWfTKSpZ+sAhhz5X1WX0ZuUqWbzB2QhSLp3DoLUG+hMdEDKqWo2Zg==
+rxjs@^6.5.2:
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.3.tgz#510e26317f4db91a7eb1de77d9dd9ba0a4899a3a"
+  integrity sha512-wuYsAYYFdWTAnAaPoKGNhfpWwKZbJW+HgAJ+mImp+Epl7BG8oNWBCTyRM8gba9k4lk8BgWdoYm21Mo/RYhhbgA==
   dependencies:
     tslib "^1.9.0"
 

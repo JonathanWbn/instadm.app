@@ -21,6 +21,7 @@
       </button>
       <picker
         v-if="showEmojiPicker"
+        :data="emojiIndex"
         :auto-focus="true"
         color="orange"
         :show-preview="false"
@@ -63,8 +64,10 @@
 <script>
 import axios from 'axios'
 import FormData from 'form-data'
-import { Picker } from 'emoji-mart-vue-fast'
+import { Picker, EmojiIndex } from 'emoji-mart-vue-fast'
 import 'emoji-mart-vue-fast/css/emoji-mart.css'
+
+import icons from '../apple-icons.json'
 import Button from './button'
 
 export default {
@@ -83,6 +86,7 @@ export default {
       message: '',
       file: null,
       showEmojiPicker: false,
+      emojiIndex: new EmojiIndex(icons),
     }
   },
   computed: {
