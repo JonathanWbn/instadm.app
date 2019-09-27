@@ -129,6 +129,7 @@ export default {
     },
     addEmoji(emoji) {
       this.message = this.message + emoji.native
+      this.showEmojiPicker = false
       this.$refs['text-input'].focus()
     },
   },
