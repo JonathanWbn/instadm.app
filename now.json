@@ -1,7 +1,6 @@
 {
   "version": 2,
   "name": "instadm",
-  "alias": "instadm.app",
   "builds": [
     { "src": "client/package.json", "use": "@now/static-build" },
     { "src": "api/routes/*.js", "use": "@now/node" }
