@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "instadm",
   "builds": [
     { "src": "client/package.json", "use": "@now/static-build" },
     { "src": "api/routes/*.js", "use": "@now/node" }
