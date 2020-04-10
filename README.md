@@ -1,3 +1,5 @@
+ℹ️As instagrams web-version now also support sending direct messages, this app no longer serves a purpose for me. I'll not be maintaining it any longer.
+
 # Direct Messaging for Instagram (web app)
 
 This is a web app which allows one to send and receive instagram direct messages.
